@@ -58,17 +58,16 @@
 ### Reformat data
 #cohort, converge
 eas_converge <- fread("/SAN/ugi/mdd/sumstats/converge/converge.with.rsids.from.1kgp3.effN.qced.191126.txt")
-eas_converge_df <- eas_converge[,c("rsid.1KGP3","CHR","BP.GRCh37","ALT_ALLELE","REF_ALLELE","alt.frq.all","OR.logistic","SE","P.lmm","Neff")]
-names(eas_converge_df) = c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+eas_converge_df <- eas_converge[,c("newid","rsid.1KGP3","CHR","BP.GRCh37","ALT_ALLELE","REF_ALLELE","alt.frq.all","OR.logistic","SE","P.lmm","Neff")]
+names(eas_converge_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
 # Neff has been named as N here, since I want to weight the mr-mega analysis by neff as well
 eas_converge_df$OR_95L <- exp(log(eas_converge_df$OR) - 1.96*eas_converge_df$SE)
 eas_converge_df$OR_95U <- exp(log(eas_converge_df$OR) + 1.96*eas_converge_df$SE)
 eas_converge_df$BETA <- log(eas_converge_df$OR)
-eas_converge_df <- eas_converge_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eas_converge_df <- eas_converge_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 table(eas_converge_df$EA)
 table(eas_converge_df$NEA)
 write.table(eas_converge_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt",row.names=F,sep="\t",quote=F)
-# where did the OR come from? ask karoline first
 
 #cohort, whi
 eas_whi <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/asians/asians_cm_page_assoc_updated_020919.txt")
@@ -109,24 +108,24 @@ eas_whi <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/asians/asians_cm_page_assoc_upda
 #eas_whi_merged <- eas_whi_merged[-index[1],]
 # I found this is uncessary, the original file have BP and CHR although some of the values are zero which are missing values.
 # just use the original whi data
-eas_whi_df <- eas_whi[,c("ID","CHR","BP","A1","A2","A1_FREQ","Neff","OR","LOG(OR)_SE","P")]
+eas_whi_df <- eas_whi[,c("newid","ID","CHR","BP","A1","A2","A1_FREQ","Neff","OR","LOG(OR)_SE","P")]
 eas_whi_df$BETA <- log(eas_whi_df$OR)
 eas_whi_df$OR_95L <- exp(log(eas_whi_df$OR) - 1.96*eas_whi_df$`LOG(OR)_SE`)
 eas_whi_df$OR_95U <- exp(log(eas_whi_df$OR) + 1.96*eas_whi_df$`LOG(OR)_SE`)
-names(eas_whi_df) = c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","N","OR","SE","P","BETA","OR_95L","OR_95U")
-eas_whi_df <- eas_whi_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+names(eas_whi_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","N","OR","SE","P","BETA","OR_95L","OR_95U")
+eas_whi_df <- eas_whi_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 table(eas_whi_df$EA)
 table(eas_whi_df$NEA)
 write.table(eas_whi_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # CKB SYMPTOMS
 eas_ckb <- fread("/SAN/ugi/mdd/sumstats/ckb/saige/mdds.with.rsids.from.1kgp3.effN.qced.191119.txt")
-eas_ckb_df <- eas_ckb[,c("rsid.1KGP3","CHR","BP","newA1","newA2","A1FREQ","BETA","SE","Neff","P")]
-names(eas_ckb_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","N","P")
+eas_ckb_df <- eas_ckb[,c("newid","rsid.1KGP3","CHR","BP","newA1","newA2","A1FREQ","BETA","SE","Neff","P")]
+names(eas_ckb_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","N","P")
 eas_ckb_df$OR = exp(eas_ckb_df$BETA)
 eas_ckb_df$OR_95L = exp(eas_ckb_df$BETA-1.96*eas_ckb_df$SE)
 eas_ckb_df$OR_95U = exp(eas_ckb_df$BETA+1.96*eas_ckb_df$SE)
-eas_ckb_df <- eas_ckb_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eas_ckb_df <- eas_ckb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 table(eas_ckb_df$EA)
 table(eas_ckb_df$NEA)
 ba <- c("A","G","C","T")
@@ -137,78 +136,78 @@ write.table(eas_ckb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.t
 
 # BioME, SAIGE
 eas_biome <- fread("/SAN/ugi/mdd/sumstats/BioMe/MDDSAIGE.ESA.updated.qced.txt")
-eas_biome_df <- eas_biome[,c("rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
+eas_biome_df <- eas_biome[,c("newid","rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
 eas_biome_df$OR <- exp(eas_biome_df$BETA)
 eas_biome_df$OR_95L <- exp(eas_biome_df$BETA-1.96*eas_biome_df$SE)
 eas_biome_df$OR_95U <- exp(eas_biome_df$BETA+1.96*eas_biome_df$SE)
-names(eas_biome_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N","OR","OR_95L","OR_95U")
-eas_biome_df <- eas_biome_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+names(eas_biome_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N","OR","OR_95L","OR_95U")
+eas_biome_df <- eas_biome_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_biome_df <- eas_biome_df[eas_biome_df$EA %in% ba & eas_biome_df$NEA %in% ba,]
 write.table(eas_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # UKB, plink, /SAN/ugi/mdd/ukb/mdd_gwas/eas/eas_pheno1_sr_plink_pcs_maf_qced_recoded.txt
 eas_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/eas/eas_pheno1_sr_plink_pcs_maf_qced_recoded.txt")
-eas_ukb_df <- eas_ukb[,c("rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","A1_FREQ","OR","LOG.OR._SE","L95","U95","P")]
+eas_ukb_df <- eas_ukb[,c("newid","rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","A1_FREQ","OR","LOG.OR._SE","L95","U95","P")]
 eas_ukb_df$Neff <- 390.2044
 eas_ukb_df$BETA <- log(eas_ukb_df$OR)
-names(eas_ukb_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N","BETA")
-eas_ukb_df <- eas_ukb_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+names(eas_ukb_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N","BETA")
+eas_ukb_df <- eas_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_ukb_df <- eas_ukb_df[eas_ukb_df$EA %in% ba & eas_ukb_df$NEA %in% ba, ]
-eas_ukb_df[eas_ukb_df$MARKERNAME == "rs9939609",]
+eas_ukb_df[eas_ukb_df$RSID == "rs9939609",]
 write.table(eas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
 # Army-Starrs, plink
 eas_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_asian_qced_updated_191007.txt")
-eas_army_df <- eas_army[,c("rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","A1_FREQ","P","Neff","OR","LOG.OR._SE","L95","U95")]
+eas_army_df <- eas_army[,c("newid","rsid.1KG","chr.1KG","pos.1KG","newA1","newA2","A1_FREQ","P","Neff","OR","LOG.OR._SE","L95","U95")]
 eas_army_df$BETA = log(eas_army_df$OR)
-names(eas_army_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","SE","OR_95L","OR_95U","BETA")
+names(eas_army_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","SE","OR_95L","OR_95U","BETA")
 eas_army_df <- eas_army_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_army_df <- eas_army_df[eas_army_df$EA %in% ba & eas_army_df$NEA %in% ba, ]
 write.table(eas_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # IHS, plink
 eas_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.eas.depr.sumstats.qced.txt")
-eas_ihs_df <- eas_ihs[,c("rsid.1KG","chr.1KG","pos.1KG","A1","A2","freq","OR","SE","P","Neff")]
+eas_ihs_df <- eas_ihs[,c("newid","rsid.1KG","chr.1KG","pos.1KG","A1","A2","freq","OR","SE","P","Neff")]
 eas_ihs_df$BETA <- log(eas_ihs_df$OR)
 eas_ihs_df$OR_95L <- exp(log(eas_ihs_df$OR)-1.96*eas_ihs_df$SE)
 eas_ihs_df$OR_95U <- exp(log(eas_ihs_df$OR)+1.96*eas_ihs_df$SE)
-names(eas_ihs_df) = c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N","BETA","OR_95L","OR_95U")
-eas_ihs_df <- eas_ihs_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+names(eas_ihs_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N","BETA","OR_95L","OR_95U")
+eas_ihs_df <- eas_ihs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_ihs_df <- eas_ihs_df[eas_ihs_df$EA %in% ba & eas_ihs_df$NEA %in% ba, ]
 write.table(eas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
 
-# Taiwan1, Not sure, need to ask Karoline, what about the inflation on platform 1 mentioned by files
+# Taiwan1
 eas_taiwan1 <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform1_01072021_qced.txt")
-eas_taiwan1_df <- eas_taiwan1[,c("rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR_platform1","SE_platform1","p_platform1","Neff")]
-names(eas_taiwan1_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+eas_taiwan1_df <- eas_taiwan1[,c("newid2","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR_platform1","SE_platform1","p_platform1","Neff")]
+names(eas_taiwan1_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
 eas_taiwan1_df$OR <- as.numeric(eas_taiwan1_df$OR)
 eas_taiwan1_df$OR_95L <- exp(log(eas_taiwan1_df$OR)-1.96*eas_taiwan1_df$SE)
 eas_taiwan1_df$OR_95U <- exp(log(eas_taiwan1_df$OR)+1.96*eas_taiwan1_df$SE)
 eas_taiwan1_df$BETA <- log(eas_taiwan1_df$OR)
-eas_taiwan1_df <- eas_taiwan1_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eas_taiwan1_df <- eas_taiwan1_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_taiwan1_df <- eas_taiwan1_df[eas_taiwan1_df$EA %in% ba & eas_taiwan1_df$NEA %in% ba,]
 write.table(eas_taiwan1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt",row.names=F,sep="\t",quote=F)
 
-# Taiwan2, Not sure, need to ask Karoline
+# Taiwan2
 eas_taiwan2 <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform2_01072021_qced.txt")
-eas_taiwan2_df <- eas_taiwan2[,c("rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR_platform2","SE_platform2","p_platform2","Neff")]
-names(eas_taiwan2_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+eas_taiwan2_df <- eas_taiwan2[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR_platform2","SE_platform2","p_platform2","Neff")]
+names(eas_taiwan2_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
 eas_taiwan2_df$OR_95L <- exp(log(eas_taiwan2_df$OR)-1.96*eas_taiwan2_df$SE)
 eas_taiwan2_df$OR_95U <- exp(log(eas_taiwan2_df$OR)+1.96*eas_taiwan2_df$SE)
 eas_taiwan2_df$BETA <- log(eas_taiwan2_df$OR)
-eas_taiwan2_df <- eas_taiwan2_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eas_taiwan2_df <- eas_taiwan2_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_taiwan2_df <- eas_taiwan2_df[eas_taiwan2_df$EA %in% ba & eas_taiwan2_df$NEA %in% ba,]
 write.table(eas_taiwan2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt",row.names=F,sep="\t",quote=F)
 
-# 23andMe, Not sure, logistic regression
+# 23andMe
 eas_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/east_asian/eas.mdd.sumstats.annotated.valid.qced.reformatted.txt")
-eas_23andMe_df <- eas_23andMe[,c("SNP","CHR","position","A1","A2","EAF","P","BETA","SE","Neff")]
-names(eas_23andMe_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","P","BETA","SE","N")
+eas_23andMe_df <- eas_23andMe[,c("newid","SNP","CHR","position","A1","A2","EAF","P","BETA","SE","Neff")]
+names(eas_23andMe_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","P","BETA","SE","N")
 eas_23andMe_df$OR <- exp(eas_23andMe_df$BETA)
 eas_23andMe_df$OR_95L <- exp(eas_23andMe_df$BETA-1.96*eas_23andMe_df$SE)
 eas_23andMe_df$OR_95U <- exp(eas_23andMe_df$BETA+1.96*eas_23andMe_df$SE)
-eas_23andMe_df <- eas_23andMe_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eas_23andMe_df <- eas_23andMe_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_23andMe_df <- eas_23andMe_df[eas_23andMe_df$EA %in% ba & eas_23andMe_df$NEA %in% ba,]
 write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
