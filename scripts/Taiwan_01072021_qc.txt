@@ -1,0 +1,79 @@
+library(data.table)
+taiwan1 <- fread("/SAN/ugi/mdd/sumstats/Taiwan/platform1.qced.txt")
+taiwan2 <- fread("/SAN/ugi/mdd/sumstats/Taiwan/platform2.qced.txt")
+taiwan1_eaf <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/EAF_platform1.txt")
+taiwan2_eaf <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/EAF_platform2.txt")
+
+dim(taiwan1)
+dim(taiwan1_eaf)
+sum(taiwan1$SNP %in% taiwan1_eaf$SNP)
+
+dim(taiwan2)
+dim(taiwan2_eaf)
+sum(taiwan2$SNP %in% taiwan2_eaf$SNP)
+
+names(taiwan1_eaf)[2]="EA"
+names(taiwan2_eaf)[2]="EA"
+
+# check before merge
+taiwan1$checkA1 <- paste(taiwan1$SNP,taiwan1$A1,sep=":")
+taiwan1$checkA2 <- paste(taiwan1$SNP,taiwan1$A2,sep=":") 
+taiwan1_eaf$checkEA <- paste(taiwan1_eaf$SNP, taiwan1_eaf$EA,sep=":")
+taiwan1$check <- NA
+taiwan1$check <- ifelse(taiwan1$checkA1 %in% taiwan1_eaf$checkEA | taiwan1$checkA2  %in% taiwan1_eaf$checkEA, "pass","fail")
+table(taiwan1$check)
+# fail pass
+# 15   551947 
+
+taiwan2$checkA1 <- paste(taiwan2$SNP,taiwan2$A1,sep=":")
+taiwan2$checkA2 <- paste(taiwan2$SNP,taiwan2$A2,sep=":") 
+taiwan2_eaf$checkEA <- paste(taiwan2_eaf$SNP, taiwan2_eaf$EA,sep=":")
+taiwan2$check <- NA
+taiwan2$check <- ifelse(taiwan2$checkA1 %in% taiwan2_eaf$checkEA | taiwan2$checkA2  %in% taiwan2_eaf$checkEA, "pass","fail")
+table(taiwan2$check)
+#fail pass
+#240  4389871
+
+# 15 rows and 240 rows were removed from taiwan 1 and taiwan 2 
+taiwan1 <- taiwan1[taiwan1$check == "pass",]
+taiwan2 <- taiwan2[taiwan2$check == "pass",] 
+
+
+taiwan1 <- merge(taiwan1,taiwan1_eaf,by.x="SNP",by.y="SNP",all.x=T,all.y=F)
+taiwan2 <- merge(taiwan2,taiwan2_eaf,by.x="SNP",by.y="SNP",all.x=T,all.y=F)
+
+taiwan1$OA <- ifelse(taiwan1$EA == taiwan1$A1, taiwan1$A2, taiwan1$A1)
+taiwan2$OA <- ifelse(taiwan2$EA == taiwan2$A1, taiwan2$A2, taiwan2$A1)
+
+# check new column EA and OA, with addNewId function
+
+addNewId <- function (input,chr="chr",pos="pos",A1="A1",A2="A2") {
+  # input as a data frame, with columns: chr, pos, A1 and A2
+  # A newid column will be added
+  newid<-ifelse(nchar(input[[A1]])==1 & nchar(input[[A2]])==1 & input[[A1]] < input[[A2]], 
+                         paste(input[[chr]], input[[pos]],input[[A1]],input[[A2]],sep=":"),
+                         ifelse(nchar(input[[A1]])==1 & nchar(input[[A2]])==1 & input[[A1]] > input[[A2]], 
+                                paste(input[[chr]],input[[pos]],input[[A2]],input[[A1]],sep=":"),
+                                ifelse((nchar(input[[A1]])>1 | nchar(input[[A2]])>1) & nchar(input[[A1]]) > nchar(input[[A2]]), 
+                                       paste(input[[chr]],input[[pos]],input[[A1]],input[[A2]],sep=":"),
+                                       ifelse((nchar(input[[A1]])>1 | nchar(input[[A2]])>1) & nchar(input[[A1]]) < nchar(input[[A2]]), 
+                                              paste(input[[chr]],input[[pos]],input[[A2]],input[[A1]],sep=":"),"problem"))))
+  return(newid)
+}
+
+
+taiwan1$newid_xm1 <- addNewId(taiwan1,chr="CHR",pos="BP",A1="A1",A2="A2")
+taiwan1$newid_xm2 <- addNewId(taiwan1,chr="CHR",pos="BP",A1="EA",A2="OA")
+sum(taiwan1$newid_xm1 == taiwan1$newid_xm2)
+
+taiwan2$newid_xm1 <- addNewId(taiwan2,chr="CHR",pos="BP",A1="A1",A2="A2")
+taiwan2$newid_xm2 <- addNewId(taiwan2,chr="CHR",pos="BP",A1="EA",A2="OA")
+sum(taiwan2$newid_xm1 == taiwan2$newid_xm2)
+
+taiwan1 <- taiwan1[,-c("check","newid_xm1","newid_xm2","checkA1","checkA2","checkEA")]
+taiwan2 <- taiwan2[,-c("check","newid_xm1","newid_xm2","checkA1","checkA2","checkEA")]
+
+write.table(taiwan1,"/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform1_01072021_qced.txt",row.names=F,col.names=T,sep="\t",quote=F)
+write.table(taiwan2,"/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform2_01072021_qced.txt",row.names=F,col.names=T,sep="\t",quote=F)
+
+

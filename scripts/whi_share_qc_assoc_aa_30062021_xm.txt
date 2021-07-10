@@ -1,0 +1,248 @@
+##WHI- GWAS_SHARe (ha/aa) imputed with MACH (separately the two datasets)
+##QC performed by WHI
+#minimal sample CR: 95%
+#minimal SNP CR: 90%
+#Hardy-Weinberg P-value cut-off below which SNPs were excluded: 1e-6
+#Samples used for Hardy-Weinberg calculations: all samples, separated for Hispanics and African Americans
+#Minimum allele frequency cut-off: 1%
+
+
+qrsh -l h_vmem=10G,tmem=10G -l h_rt=02:00:00 
+cd /SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/
+
+##Remove intermediate results of chunks 
+wc -l res_1.200226.assoc.dosage
+wc -l res_2.200226.assoc.dosage
+wc -l res_3.200226.assoc.dosage
+wc -l res_4.200226.assoc.dosage
+wc -l res_5.200226.assoc.dosage
+wc -l res_6.200226.assoc.dosage
+wc -l res_7.200226.assoc.dosage
+wc -l res_8.200226.assoc.dosage
+wc -l res_9.200226.assoc.dosage
+wc -l res_10.200226.assoc.dosage
+wc -l res_11.200226.assoc.dosage
+wc -l res_12.200226.assoc.dosage
+wc -l res_13.200226.assoc.dosage
+wc -l res_14.200226.assoc.dosage
+wc -l res_15.200226.assoc.dosage
+wc -l res_16.200226.assoc.dosage
+wc -l res_17.200226.assoc.dosage
+wc -l res_18.200226.assoc.dosage
+wc -l res_19.200226.assoc.dosage
+wc -l res_20.200226.assoc.dosage
+wc -l res_21.200226.assoc.dosage
+wc -l res_22.200226.assoc.dosage
+
+rm res_1_*.assoc.dosage 
+rm res_2_*.assoc.dosage 
+rm res_3_*.assoc.dosage 
+rm res_4_*.assoc.dosage 
+rm res_5_*.assoc.dosage 
+rm res_6_*.assoc.dosage 
+rm res_7_*.assoc.dosage 
+rm res_8_*.assoc.dosage 
+rm res_9_*.assoc.dosage 
+rm res_10_*.assoc.dosage 
+rm res_11_*.assoc.dosage 
+rm res_12_*.assoc.dosage 
+rm res_13_*.assoc.dosage 
+rm res_14_*.assoc.dosage 
+rm res_15_*.assoc.dosage 
+rm res_16_*.assoc.dosage 
+rm res_17_*.assoc.dosage 
+rm res_18_*.assoc.dosage 
+rm res_19_*.assoc.dosage 
+rm res_20_*.assoc.dosage 
+rm res_21_*.assoc.dosage 
+rm res_22_*.assoc.dosage 
+
+
+##Concatenate results of all chromosomes together
+cp /SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_1.200226.assoc.dosage /SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa.200226.assoc.dosage
+
+for i in {2..22}
+do
+tail -n+2 /SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_${i}.200226.assoc.dosage >> /SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa.200226.assoc.dosage
+done
+
+wc -l res_aa.200226.assoc.dosage
+
+sort -k8 -n res_aa.200226.assoc.dosage | grep -v "NA" > res_aa.200226.txt
+wc -l res_aa.200226.txt
+
+gzip res_aa.200226.txt
+
+
+
+##QC##
+
+/share/apps/R-3.4.3/bin/R
+library(data.table)
+
+aa_all<-fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa.200226.txt",header=TRUE)
+
+dim(aa_all)
+names(aa_all)
+summary(aa_all$FRQ)
+
+aa_all$MAF_plink<-ifelse(aa_all$FRQ>0.5,1-aa_all$FRQ,aa_all$FRQ)
+summary(aa_all$MAF_plink)
+summary(aa_all$INFO)
+
+aa_all$effN<-2*aa_all$MAF_plink*(1-aa_all$MAF_plink)*8038*aa_all$INFO 
+summary(aa_all$effN)  
+
+#read info files provided by WHI (files for c1 and c2 are the same):
+#SNP; Al1; Al2; Freq (frequency for allele 1); Quality (the average posterior probability for the most likely genotype. For a given frequency, markers with higher quality are typically better imputed. However, it is hard to compare quality scores for markers with different minor allele frequencies); Rsq (a better quality measured, which estimates the squared correlation between imputed and true genotypes. Typically, a cut-off of 0.30 or so will flag most of the poorly imputed SNPs, but only a small number (<1%) of well imputed SNPs)
+
+dirIN<- ("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/phg000592.v1.WHI_SHARE_aa.genotype-imputed-data.c1/")
+chr <- 1:22
+for (i in 1:length(chr)) {
+info<-fread(paste(dirIN, "SHAREchr",chr[i],"aa.info.gz",sep=""), header=TRUE)
+assign(paste0("chr", chr[i]), info)
+}
+
+info<-rbind(chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22)
+
+merged<-merge(aa_all,info,by.x="SNP",by.y="SNP",all.x=TRUE,all.y=FALSE)
+
+summary(merged$FRQ) #aa depression dataset
+
+summary(merged$MAF_plink) #aa depression dataset
+summary(merged$Freq1) #aa whi
+summary(merged$MAF) #aa whi
+table(merged$Quality)
+summary(merged$INFO) #aa depression dataset
+summary(merged$Rsq) #aa whi
+
+merged$plink_info_exclude<-ifelse(merged$INFO>=0.7, "keep", "exclude")
+merged$whi_rsq_exclude<-ifelse(merged$Rsq>=0.7, "keep", "exclude")
+
+table(merged$plink_info_exclude)
+table(merged$whi_rsq_exclude)
+
+merged$effN_v2<-2*merged$MAF*(1-merged$MAF)*8038*merged$Rsq 
+merged$MAC_exclude_whi<-ifelse(merged$effN_v2<50,"exclude","keep")
+table(merged$MAC_exclude_whi)
+
+merged$MAC_exclude<-ifelse(merged$effN<50,"exclude","keep")
+table(merged$MAC_exclude)
+
+merged$qc_depression_dataset<-ifelse(merged$MAC_exclude == "keep" & merged$plink_info_exclude == "keep", "keep", "exclude")
+table(merged$qc_depression_dataset)
+
+merged$qc_whi<-ifelse(merged$MAC_exclude_whi == "keep" & merged$whi_rsq_exclude == "keep", "keep", "exclude")
+table(merged$qc_whi)
+
+
+check<-subset(merged, plink_info_exclude == "keep" & whi_rsq_exclude == "exclude")
+dim(check)
+check<-subset(merged, A1 != Al1)
+dim(check)
+
+merged$A1<-as.character(merged$A1)
+merged$A2<-as.character(merged$A2)
+
+merged$EA<-ifelse(merged$A1 == "1", "A", ifelse(merged$A1 == "2", "C", ifelse(merged$A1 == "3", "G", ifelse(merged$A1 == "4", "T", ifelse(merged$A1 == "5", "I", ifelse(merged$A1 == "6", "D", ifelse(merged$A1 == "7", "1000Gref", "other")))))))
+table(merged$EA)
+
+merged$OA<-ifelse(merged$A2 == "1", "A", ifelse(merged$A2 == "2", "C", ifelse(merged$A2 == "3", "G", ifelse(merged$A2 == "4", "T", ifelse(merged$A2 == "5", "I", ifelse(merged$A2 == "6", "D", ifelse(merged$A2 == "7", "1000Gref", "other")))))))
+table(merged$OA)
+
+
+merged$BETA<-log(merged$OR) #natural algorithm
+
+check<-subset(merged, EA != "A" & EA != "T" & EA != "C" & EA != "G" & EA != "I" & EA != "D" & OA != "A" & OA != "T" & OA != "C" & OA != "G" & OA != "I" & OA != "D")
+dim(check)
+head(check)
+
+merged<-subset(merged, EA != "1000Gref" & OA != "1000Gref")
+
+colnames(merged)[which(names(merged) == "FRQ")] <- "EAF"
+library(tidyr)
+merged<-separate(merged, col= SNP, into=c("CHROM","POS"), sep=":", remove=TRUE)
+
+#write.table(merged,file="/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_with_thresholds.txt", sep="\t", row.names=FALSE, col.names=TRUE, quote = FALSE) 
+
+
+#aaqced <-subset(merged, qc_depression_dataset == "keep")
+#dim(aaqced)
+#table(aaqced$qc_whi)
+
+#lambda <- (median(((aaqced$BETA / aaqced$SE)^2), na.rm=TRUE))/0.4549364231
+#lambda
+#gwas <- subset(aaqced, P <= 5e-08) 
+#dim(gwas)
+#significant <- subset(aaqced, P <= 1e-05) 
+#dim(significant)
+#summary(significant$P)
+
+#names(aaqced)
+#aaqced<-aaqced[,c(1,2,25,26,5,7,8,27,9)]
+#dim(aaqced)
+
+#write.table(aaqced,file="/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_plink_qced.txt", sep="\t", row.names=FALSE, col.names=TRUE, quote = FALSE) 
+
+
+aaqced <-subset(merged, qc_whi == "keep")
+dim(aaqced)
+table(aaqced$qc_depression_dataset)
+lambda <- (median(((aaqced$BETA / aaqced$SE)^2), na.rm=TRUE))/0.4549364231
+lambda
+gwas <- subset(aaqced, P <= 5e-08) 
+dim(gwas)
+significant <- subset(aaqced, P <= 1e-05) 
+dim(significant)
+summary(significant$P)
+
+names(aaqced)
+aaqced<-aaqced[,c(1,2,25,26,5,15,7,8,27,9)]
+dim(aaqced)
+
+
+write.table(aaqced,file="/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_qced_30062021.txt", sep="\t", row.names=FALSE, col.names=TRUE, quote = FALSE) 
+
+#library(qqman)
+
+#jpeg("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_whi.qqplot.jpeg")
+#qq(merged$P, main = "WHI African Americans, GWAS_SHARe")
+#mtext(paste(length(merged$SNP),"variants;", sep=" "), adj=0, las=1)
+#dev.off()
+
+#jpeg("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_whi_qced.qqplot.jpeg")
+#qq(aaqced$P, main = "WHI African Americans, GWAS_SHARe, QCed (provided metric)")
+#mtext(paste(length(aaqced$SNP),"variants;", sep=" "), adj=0, las=1)
+#dev.off()
+
+#q()
+#n
+
+
+#Recode for the MA (using the QCed version with the provided metrics)
+qrsh -l h_vmem=60G,tmem=60G -l h_rt=01:00:00
+/share/apps/R-3.4.3/bin/R
+library(data.table)
+
+study<-fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_qced_30062021.txt",header=TRUE)
+
+study$newid<-ifelse(nchar(study$EA)==1 & nchar(study$OA)==1 & study$EA< study$OA, paste(study$CHROM, study$POS, study$EA, study$OA,sep=":"),ifelse(nchar(study$EA)==1 & nchar(study$OA)==1 & study$EA> study$OA, paste(study$CHROM, study$POS, study$OA, study$EA,sep=":"),ifelse(nchar(study$EA)>1 | nchar(study$OA)>1 & nchar(study$EA) > nchar(study$OA), paste(study$CHROM, study$POS, study$EA, study$OA,sep=":"),ifelse(nchar(study$EA)>1 | nchar(study$OA)>1 & nchar(study$EA) < nchar(study$OA), paste(study$CHROM, study$POS, study$OA, study$EA,sep=":"),"problem"))))
+
+list_of_files <- list.files(path = "/SAN/ugi/ukhls/1000G/1KGP3_bim", recursive = TRUE,
+                            pattern = "\\.bim.gz$", 
+                            full.names = TRUE)
+list_of_files
+
+DT <- rbindlist(sapply(list_of_files, fread, simplify = FALSE),
+                use.names = TRUE)        
+names(DT) <- c("chr.1KG", "rsid.1KG", "cm.1KG", "pos.1KG", "A1.1KG", "A2.1KG", "ID.1KG")
+
+study<-merge(study,DT,by.x="newid",by.y="ID.1KG",all.x=TRUE,all.y=FALSE)
+
+study$N<-8038
+study$Neff = 4/(1/1445+1/6593)
+
+write.table(study,file="/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_qced_30062021.txt", sep="\t", row.names=FALSE, col.names=TRUE, quote = FALSE)
+
+
+
