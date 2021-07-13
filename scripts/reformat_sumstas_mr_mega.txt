@@ -57,6 +57,7 @@
 
 ### Reformat data
 #cohort, converge
+options(scipen = 999) # disable scientific notation
 eas_converge <- fread("/SAN/ugi/mdd/sumstats/converge/converge.with.rsids.from.1kgp3.effN.qced.191126.txt")
 eas_converge_df <- eas_converge[,c("newid","rsid.1KGP3","CHR","BP.GRCh37","ALT_ALLELE","REF_ALLELE","alt.frq.all","OR.logistic","SE","P.lmm","Neff")]
 names(eas_converge_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
@@ -215,65 +216,71 @@ write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_refor
 # BioMe
 afr_biome <- fread("/SAN/ugi/mdd/sumstats/BioMe/MDDSAIGE.AA.updated.effN.qced.txt")
 afr_biome$xm.rsid <- ifelse(!is.na(afr_biome$rsid.1KG),afr_biome$rsid.1KG,afr_biome$rsid)
-afr_biome_df <- afr_biome[,c("xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
+afr_biome$MARKERNAME <- addNewId(afr_biome,chr="CHR",pos="POS",A1="newA1",A2="newA2")
+afr_biome_df <- afr_biome[,c("MARKERNAME","xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
 afr_biome_df$OR <- exp(afr_biome_df$BETA)
 afr_biome_df$OR_95L <- exp(afr_biome_df$BETA-1.96*afr_biome_df$SE)
 afr_biome_df$OR_95U <- exp(afr_biome_df$BETA+1.96*afr_biome_df$SE)
-afr_biome_df <- afr_biome_df[,c("xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff","OR","OR_95L","OR_95U")]
-names(afr_biome_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N","OR","OR_95L","OR_95U")
-afr_biome_df <- afr_biome_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_biome_df <- afr_biome_df[,c("MARKERNAME","xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff","OR","OR_95L","OR_95U")]
+names(afr_biome_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N","OR","OR_95L","OR_95U")
+afr_biome_df <- afr_biome_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_biome_df <- afr_biome_df[afr_biome_df$EA %in% ba & afr_biome_df$NEA %in% ba,]
 write.table(afr_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # UKB
 afr_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/african/black_pheno1_sr_plink_pcs_maf_qced.txt")
 afr_ukb$xm.rsid <- ifelse(!is.na(afr_ukb$rsid.1KG),afr_ukb$rsid.1KG,afr_ukb$ID)
-afr_ukb_df <- afr_ukb[,c("xm.rsid","CHROM","POS","newA1","newA2","EAF","OR","L95","U95","P","Neff","LOG.OR._SE")]
+afr_ukb_df <- afr_ukb[,c("newid","xm.rsid","CHROM","POS","newA1","newA2","EAF","OR","L95","U95","P","Neff","LOG.OR._SE")]
 
-names(afr_ukb_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N","SE")
+names(afr_ukb_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N","SE")
 afr_ukb_df$BETA <- log(afr_ukb_df$OR)
-afr_ukb_df <- afr_ukb_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_ukb_df <- afr_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_ukb_df <- afr_ukb_df[afr_ukb_df$EA %in% ba & afr_ukb_df$NEA %in% ba,]
+sum(grepl("e",afr_ukb_df$MARKERNAME,fixed=TRUE))
 write.table(afr_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # drakenstein
 afr_safr <- fread("/SAN/ugi/mdd/sumstats/safr/safr_depr_sumstats_plink2_maf_qced_updated.txt")
 afr_safr$xm.rsid <- ifelse(!is.na(afr_safr$ID),afr_safr$ID,afr_safr$rsid)
-afr_safr_df <- afr_safr[,c("xm.rsid","CHR","POS","newA1","newA2","A1_FREQ","OR","L95","U95","P","Neff","LOG.OR._SE")]
-names(afr_safr_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N","SE")
-afr_safr_df$BETA <- log(afr_safr_df$OR
-afr_safr_df <- afr_safr_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_safr_df <- afr_safr[,c("newid","xm.rsid","CHR","POS","newA1","newA2","A1_FREQ","OR","L95","U95","P","Neff","LOG.OR._SE")]
+names(afr_safr_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N","SE")
+afr_safr_df$BETA <- log(afr_safr_df$OR)
+afr_safr_df <- afr_safr_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_safr_df <- afr_safr_df[afr_safr_df$EA %in% ba & afr_safr_df$NEA %in% ba,]
+sum(grepl("e",afr_safr_df$MARKERNAME,fixed=TRUE))
 write.table(afr_safr_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # army
 afr_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_black_qced_updated.txt")
 afr_army$xm.rsid <- ifelse(!is.na(afr_army$ID),afr_army$ID,afr_army$rsid)
-afr_army_df <- afr_army[,c("xm.rsid","CHR","POS","newA1","newA2","A1_FREQ","P","Neff","OR","L95","U95","LOG.OR._SE")]
-names(afr_army_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","OR_95L","OR_95U","SE")
+afr_army_df <- afr_army[,c("newid","xm.rsid","CHR","POS","newA1","newA2","A1_FREQ","P","Neff","OR","L95","U95","LOG.OR._SE")]
+names(afr_army_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","OR_95L","OR_95U","SE")
 afr_army_df$BETA <- log(afr_army_df$OR)
-afr_army_df <- afr_army_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_army_df <- afr_army_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_army_df <- afr_army_df[afr_army_df$EA %in% ba & afr_army_df$NEA %in% ba,]
+sum(grepl("e",afr_army_df$MARKERNAME,fixed=TRUE))
 write.table(afr_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # whi-share
 afr_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_qced_30062021.txt")
-afr_whi_share_df <- afr_whi_share[,c("rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
+afr_whi_share_df <- afr_whi_share[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
 afr_whi_share_df$OR_95L <- exp(afr_whi_share_df$BETA - 1.96*afr_whi_share_df$SE)
 afr_whi_share_df$OR_95U <- exp(afr_whi_share_df$BETA + 1.96*afr_whi_share_df$SE)
-names(afr_whi_share_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
-afr_whi_share_df <- afr_whi_share_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+names(afr_whi_share_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
+afr_whi_share_df <- afr_whi_share_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_whi_share_df <- afr_whi_share_df[afr_whi_share_df$EA %in% ba & afr_whi_share_df$NEA %in% ba,]
+sum(grepl("e",afr_whi_share_df$MARKERNAME,fixed=TRUE))
 write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
 # whi-page
 afr_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/aa_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
-afr_whi_page_df <- afr_whi_page[,c("rsid.1KG","CHROM","POS","EA","OA","A1_FREQ","OR","LOG.OR._SE","L95","U95","P","Neff")]
-names(afr_whi_page_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N")
+afr_whi_page_df <- afr_whi_page[,c("newid","rsid.1KG","CHROM","POS","EA","OA","A1_FREQ","OR","LOG.OR._SE","L95","U95","P","Neff")]
+names(afr_whi_page_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N")
 afr_whi_page_df$BETA <- log(afr_whi_page_df$OR)
-afr_whi_page_df <- afr_whi_page_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_whi_page_df <- afr_whi_page_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_whi_page_df <- afr_whi_page_df[afr_whi_page_df$EA %in% ba & afr_whi_page_df$NEA %in% ba,]
+sum(grepl("e",afr_whi_page_df$MARKERNAME,fixed=TRUE))
 write.table(afr_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
 # Question: Nearly half of rsids is missing? Reason and what to do?
 
@@ -284,130 +291,189 @@ n_occur <- data.frame(table(afr_ihs$newid))
 n_occur[n_occur$Freq > 1,]
 index <- which(afr_ihs$newid %in% n_occur$Var1[n_occur$Freq > 1])
 afr_ihs <- afr_ihs[-index[2],]
-afr_ihs_df <- afr_ihs[,c("rsid","chr","pos","A1.x","A2.x","FRQ","OR","SE","P","Neff")]
-names(afr_ihs_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+afr_ihs_df <- afr_ihs[,c("newid","rsid","chr","pos","A1.x","A2.x","FRQ","OR","SE","P","Neff")]
+names(afr_ihs_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
 afr_ihs_df$OR_95L <- exp(log(afr_ihs_df$OR)-1.96*afr_ihs_df$SE)
 afr_ihs_df$OR_95U <- exp(log(afr_ihs_df$OR)+1.96*afr_ihs_df$SE)
 afr_ihs_df$BETA <- log(afr_ihs_df$OR)
-afr_ihs_df <- afr_ihs_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_ihs_df <- afr_ihs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_ihs_df <- afr_ihs_df[afr_ihs_df$EA %in% ba & afr_ihs_df$NEA %in% ba,]
+sum(grepl("e",afr_ihs_df$MARKERNAME,fixed=TRUE))
 write.table(afr_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
-# 23andMe # I am here, 2021.07.09
+# 23andMe
 afr_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/african_american/afr.mdd.sumstats.annotated.valid.qced.reformatted.txt")
-afr_23andMe_df <- afr_23andMe[,c("SNP","CHR","position","A1","A2","EAF","BETA","SE","P","Neff")]
-names(afr_23andMe_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
+afr_23andMe_df <- afr_23andMe[,c("newid","SNP","CHR","position","A1","A2","EAF","BETA","SE","P","Neff")]
+names(afr_23andMe_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
 afr_23andMe_df$OR <- exp(afr_23andMe_df$BETA)
 afr_23andMe_df$OR_95L <- exp(afr_23andMe_df$BETA - 1.96*afr_23andMe_df$SE)
 afr_23andMe_df$OR_95U <- exp(afr_23andMe_df$BETA + 1.96*afr_23andMe_df$SE)
+afr_23andMe_df <- afr_23andMe_df[afr_23andMe_df$EA %in% ba & afr_23andMe_df$NEA %in% ba,]
+sum(grepl("e",afr_23andMe_df$MARKERNAME,fixed=TRUE))
 write.table(afr_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # jhs
 afr_jhs <- fread("/SAN/ugi/mdd/JHS/Jackson.Heart.Study.June19/jhs_phs001356_phg001202_cesd_dataset/gwas/jhs_phs001356_phg001202_cesd_sumstats_valid_info_maf_qced_updated.txt")
-afr_jhs_df <- afr_jhs[,c("rsid.1KG","CHROM","POS","newA1","newA2","EAF","OR","L95","U95","P","Neff")]
-names(afr_jhs_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N")
+afr_jhs_df <- afr_jhs[,c("newid","rsid.1KG","CHROM","POS","newA1","newA2","EAF","OR","LOG.OR._SE","L95","U95","P","Neff")]
+names(afr_jhs_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N")
+afr_jhs_df$BETA <- log(afr_jhs_df$OR)
+afr_jhs_df <- afr_jhs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_jhs_df <- afr_jhs_df[afr_jhs_df$EA %in% ba & afr_jhs_df$NEA %in% ba,]
+sum(grepl("e",afr_jhs_df$MARKERNAME,fixed=TRUE))
+afr_jhs_df[afr_jhs_df$RSID=="rs9939609",]
 write.table(afr_jhs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # biovu
-# Question: EUR BioVU need to use the R2 filtered as well
 afr_biovu <- fread("/SAN/ugi/mdd/african_ma/data/051821_BioVU_MDD_AFR_Cov_SAIGE_GWAS_qced.txt")
 afr_biovu_df <- afr_biovu[,c("SNPID","CHR","POS","Allele2","Allele1","AF_Allele2","BETA","SE","p.value")]
-names(afr_biovu_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P")
+afr_biovu_df$MARKERNAME <- addNewId(afr_biovu_df,chr="CHR",pos="POS",A1="Allele1",A2="Allele2")
+names(afr_biovu_df) <- c("RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","MARKERNAME")
 afr_biovu_df$OR <- exp(afr_biovu_df$BETA)
 afr_biovu_df$OR_95L <- exp(afr_biovu_df$BETA - 1.96*afr_biovu_df$SE)
 afr_biovu_df$OR_95U <- exp(afr_biovu_df$BETA + 1.96*afr_biovu_df$SE)
 afr_biovu_df$N <- 3320.838275
+afr_biovu_df <- afr_biovu_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_biovu_df <- afr_biovu_df[afr_biovu_df$EA %in% ba & afr_biovu_df$NEA %in% ba,]
+sum(grepl("e",afr_biovu_df$MARKERNAME,fixed=TRUE))
+afr_biovu_df[afr_biovu_df$RSID=="rs9939609",]
 write.table(afr_biovu_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # MVP
 # Question, need to redo the newA1 and newA2 construction
-afr_mvp <- fread("/SAN/ugi/mdd/african_ma/data/dbGAP_AFR_ICDdepMVPfreq_N_Neff_reformatted.txt")
-afr_mvp_df <- afr_mvp[,c("rsid","CHR","BP","newA1","newA2","Freq1","EFFECT","SE","P","Neff")]
-names(afr_mvp_df) = c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
-afr_mvp_df$OR = exp(afr_mvp_df$BETA)
+afr_mvp <- fread("/SAN/ugi/mdd/african_ma/data/AFR_MVP4.0_icd_Depression_forPGC_qced.txt")
+afr_mvp$newid <- addNewId(afr_mvp,chr="CHROM",pos="POS",A1="A1",A2="A2")
+afr_mvp_df <- afr_mvp[,c("newid","rsid","CHROM","POS","A1","A2","A1_FREQ","OR","LOG.OR._SE","P")]
+names(afr_mvp_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P")
+afr_mvp_df$BETA = log(afr_mvp_df$OR)
 afr_mvp_df$OR_95L = exp(afr_mvp_df$BETA - 1.96*afr_mvp_df$SE)
 afr_mvp_df$OR_95U = exp(afr_mvp_df$BETA + 1.96*afr_mvp_df$SE)
+afr_mvp_df$N <- 92131.08
+afr_mvp_df <- afr_mvp_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_mvp_df <- afr_mvp_df[afr_mvp_df$EA %in% ba & afr_mvp_df$NEA %in% ba,]
+sum(grepl("e",afr_mvp_df$MARKERNAME,fixed=TRUE))
+afr_mvp_df[afr_mvp_df$RSID=="rs9939609",]
 write.table(afr_mvp_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## Reformatting for SAS data
 # UKB, plink
 sas_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/sas/sas_pheno1_sr_plink_pcs_maf_qced.txt")
 sas_ukb$xm.rsid <- ifelse(!is.na(sas_ukb$rsid.1KG),sas_ukb$rsid.1KG,sas_ukb$ID)
-sas_ukb_df <- sas_ukb[,c("xm.rsid","CHROM","POS","newA1","newA2","EAF","OR","L95","U95","P","Neff")]
-names(sas_ukb_df) = c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N")
+sas_ukb_df <- sas_ukb[,c("newid","xm.rsid","CHROM","POS","newA1","newA2","EAF","OR","LOG.OR._SE","L95","U95","P","Neff")]
+names(sas_ukb_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N")
+sas_ukb_df$BETA <- log(sas_ukb_df$OR)
+sas_ukb_df <- sas_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+sas_ukb_df <- sas_ukb_df[sas_ukb_df$EA %in% ba & sas_ukb_df$NEA %in% ba,]
+sum(grepl("e",sas_ukb_df$MARKERNAME,fixed=TRUE))
+sas_ukb_df[sas_ukb_df$RSID=="rs9939609",]
 write.table(sas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # IHS, plink
 sas_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.sas.depr.sumstats.qced.txt")
-sas_ihs_df <- sas_ihs[,c("SNP","CHR","POS","A1","A2","FRQ","OR","SE","P","Neff")]
-names(sas_ihs_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+sas_ihs_df <- sas_ihs[,c("newid","SNP","CHR","POS","A1","A2","FRQ","OR","SE","P","Neff")]
+names(sas_ihs_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+sas_ihs_df$BETA <- log(sas_ihs_df$OR)
 sas_ihs_df$OR_95L <- exp(log(sas_ihs_df$OR) - 1.96*sas_ihs_df$SE)
 sas_ihs_df$OR_95U <- exp(log(sas_ihs_df$OR) + 1.96*sas_ihs_df$SE)
+sas_ihs_df <- sas_ihs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+sas_ihs_df <- sas_ihs_df[sas_ihs_df$EA %in% ba & sas_ihs_df$NEA %in% ba,]
+sum(grepl("e",sas_ihs_df$MARKERNAME,fixed=TRUE))
+sas_ihs_df[sas_ihs_df$RSID=="rs9939609",]
 write.table(sas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # G&H, SAIGE, version 1 (ICD diagnosis based)
 sas_gh_v1 <- fread("/SAN/ugi/gh/MDD/saige3_S15_Depression1_2020_07_24.completegwas.qced.SAIGE.txt")
-sas_gh_v1_df <- sas_gh_v1[,c("rsid.1KGP3","CHR","POS","Allele2","Allele1","AF_Allele2","BETA","SE","p.value","Neff")]
-names(sas_gh_v1_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
+sas_gh_v1$MARKERNAME <- addNewId(sas_gh_v1,chr="CHR",pos="POS",A1="Allele1",A2="Allele2")
+sas_gh_v1_df <- sas_gh_v1[,c("MARKERNAME","rsid.1KGP3","CHR","POS","Allele2","Allele1","AF_Allele2","BETA","SE","p.value","Neff")]
+names(sas_gh_v1_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
 sas_gh_v1_df$OR_95L <- exp(sas_gh_v1_df$BETA - 1.96*sas_gh_v1_df$SE)
 sas_gh_v1_df$OR_95U <- exp(sas_gh_v1_df$BETA + 1.96*sas_gh_v1_df$SE)
 sas_gh_v1_df$OR <- exp(sas_gh_v1_df$BETA)
+sas_gh_v1_df <- sas_gh_v1_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+sas_gh_v1_df <- sas_gh_v1_df[sas_gh_v1_df$EA %in% ba & sas_gh_v1_df$NEA %in% ba,]
+sum(grepl("e",sas_gh_v1_df$MARKERNAME,fixed=TRUE))
+sas_gh_v1_df[sas_gh_v1_df$RSID=="rs9939609",]
 write.table(sas_gh_v1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # G&H, SAIGE, version 2 (considering also cases diagnosed with 'anxiety with depression')
 sas_gh_v2 <- fread("/SAN/ugi/gh/MDD/saige3_S15_Depression2_2020_07_24.completegwas.qced.SAIGE.txt")
-sas_gh_v2_df <- sas_gh_v2[,c("rsid.1KGP3","CHR","POS","Allele2","Allele1","AF_Allele2","BETA","SE","p.value","Neff")]
-names(sas_gh_v2_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
+sas_gh_v2$MARKERNAME <- addNewId(sas_gh_v2,chr="CHR",pos="POS",A1="Allele1",A2="Allele2")
+sas_gh_v2_df <- sas_gh_v2[,c("MARKERNAME","rsid.1KGP3","CHR","POS","Allele2","Allele1","AF_Allele2","BETA","SE","p.value","Neff")]
+names(sas_gh_v2_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
 sas_gh_v2_df$OR_95L <- exp(sas_gh_v2_df$BETA - 1.96*sas_gh_v2_df$SE)
 sas_gh_v2_df$OR_95U <- exp(sas_gh_v2_df$BETA + 1.96*sas_gh_v2_df$SE)
 sas_gh_v2_df$OR <- exp(sas_gh_v2_df$BETA)
+sas_gh_v2_df <- sas_gh_v2_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+sas_gh_v2_df <- sas_gh_v2_df[sas_gh_v2_df$EA %in% ba & sas_gh_v2_df$NEA %in% ba,]
+sum(grepl("e",sas_gh_v2_df$MARKERNAME,fixed=TRUE))
+sas_gh_v2_df[sas_gh_v2_df$RSID=="rs9939609",]
 write.table(sas_gh_v2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v2_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
 ## Reformatting for HIS data
 # 23andMe, logistic regression
 his_23andme <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/latino/hisp.mdd.sumstats.annotated.valid.qced.reformatted.txt.gz")
-his_23andMe_df <- his_23andme[,c("SNP","CHR","position","A1","A2","EAF","BETA","SE","P","Neff")]
-names(his_23andMe_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
+his_23andMe_df <- his_23andme[,c("newid","SNP","CHR","position","A1","A2","EAF","BETA","SE","P","Neff")]
+names(his_23andMe_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
 his_23andMe_df$OR <- exp(his_23andMe_df$BETA)
 his_23andMe_df$OR_95L <- exp(his_23andMe_df$BETA - 1.96*his_23andMe_df$SE)
 his_23andMe_df$OR_95U <- exp(his_23andMe_df$BETA + 1.96*his_23andMe_df$SE)
+his_23andMe_df <- his_23andMe_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_23andMe_df <- his_23andMe_df[his_23andMe_df$EA %in% ba & his_23andMe_df$NEA %in% ba,]
+sum(grepl("e",his_23andMe_df$MARKERNAME,fixed=TRUE))
+his_23andMe_df[his_23andMe_df$RSID=="rs9939609",]
 write.table(his_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # WHI Page, plink
 his_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/ha_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
-his_whi_page_df <- his_whi_page[,c("rsid.1KG","CHROM","POS","EA","OA","A1_FREQ","OR","L95","U95","P","Neff")]
-names(his_whi_page_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N")
+his_whi_page_df <- his_whi_page[,c("newid","rsid.1KG","CHROM","POS","EA","OA","A1_FREQ","OR","LOG.OR._SE","L95","U95","P","Neff")]
+names(his_whi_page_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","OR_95L","OR_95U","P","N")
+his_whi_page_df$BETA <- log(his_whi_page_df$OR)
+his_whi_page_df <- his_whi_page_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_whi_page_df <- his_whi_page_df[his_whi_page_df$EA %in% ba & his_whi_page_df$NEA %in% ba,]
+sum(grepl("e",his_whi_page_df$MARKERNAME,fixed=TRUE))
+his_whi_page_df[his_whi_page_df$RSID=="rs9939609",]
 write.table(his_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # WHI Share, plink
-his_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_ha/res_ha_200226_qced.txt")
-his_whi_share_df <- his_whi_share[,c("rsid.1KG","chr.1KG","pos.1KG","EA","OA","Freq1","OR","SE","BETA","P","Neff")]
+his_whi_share <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/whi_share_ha_qc/res_ha_200226_qced_30062021.txt")
+his_whi_share_df <- his_whi_share[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
 his_whi_share_df$OR_95L <- exp(his_whi_share_df$BETA - 1.96*his_whi_share_df$SE)
 his_whi_share_df$OR_95U <- exp(his_whi_share_df$BETA + 1.96*his_whi_share_df$SE)
-names(his_whi_share_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
+names(his_whi_share_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
+his_whi_share_df <- his_whi_share_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_whi_share_df <- his_whi_share_df[his_whi_share_df$EA %in% ba & his_whi_share_df$NEA %in% ba,]
+sum(grepl("e",his_whi_share_df$MARKERNAME,fixed=TRUE))
+his_whi_share_df[his_whi_share_df$RSID=="rs9939609",]
 write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # Army-Starss, plink
-# Question, Not EAF in file, need to find out why
-his_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_hisp_effn_qced.txt")
-afr_army$xm.rsid <- ifelse(!is.na(afr_army$ID),afr_army$ID,afr_army$rsid)
-afr_army_df <- afr_army[,c("xm.rsid","CHR","POS","newA1","newA2","A1_FREQ","P","Neff","OR","L95","U95")]
-names(afr_army_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","OR_95L","OR_95U")
-write.table(afr_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_hisp_effn_qced_07042021.txt.gz")
+his_army$xm.rsid <- ifelse(!is.na(his_army$ID),his_army$ID,his_army$rsid)
+his_army_df <- his_army[,c("newid2","xm.rsid","CHR","POS","EA","OA","A1_FREQ","P","Neff","OR","LOG.OR._SE","L95","U95")]
+names(his_army_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","P","N","OR","SE","OR_95L","OR_95U")
+his_army_df$BETA <- log(his_army_df$OR)
+his_army_df <- his_army_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_army_df <- his_army_df[his_army_df$EA %in% ba & his_army_df$NEA %in% ba,]
+sum(grepl("e",his_army_df$MARKERNAME,fixed=TRUE))
+his_army_df[his_army_df$RSID=="rs9939609",]
+write.table(his_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
 # BioMe, SAIGE
 his_biome <- fread("/SAN/ugi/mdd/sumstats/BioMe/MDDSAIGE.HA.updated.effN.qced.txt")
 his_biome$xm.rsid <- ifelse(!is.na(his_biome$rsid.1KG),his_biome$rsid.1KG,his_biome$rsid)
+his_biome$MARKERNAME <- addNewId(his_biome,chr="CHR",pos="POS",A1="Allele1",A2="Allele2")
 his_biome$Neff <- 375.8256
-his_biome_df <- his_biome[,c("xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
+his_biome_df <- his_biome[,c("MARKERNAME","xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","BETA","SE","p.value","Neff")]
+names(his_biome_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N")
 his_biome_df$OR <- exp(his_biome_df$BETA)
 his_biome_df$OR_95L <- exp(his_biome_df$BETA-1.96*his_biome_df$SE)
 his_biome_df$OR_95U <- exp(his_biome_df$BETA+1.96*his_biome_df$SE)
-his_biome_df <- his_biome_df[,c("xm.rsid","CHR","POS","newA1","newA2","AF_Allele2","OR","OR_95L","OR_95U","p.value","Neff")]
-names(his_biome_df) <- c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N")
+his_biome_df <- his_biome_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_biome_df <- his_biome_df[his_biome_df$EA %in% ba & his_biome_df$NEA %in% ba,]
+sum(grepl("e",his_biome_df$MARKERNAME,fixed=TRUE))
+his_biome_df[his_biome_df$RSID=="rs9939609",]
 write.table(his_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## Reformatting for EUR
@@ -434,5 +500,22 @@ index <- which(eur_pgc_howard_df$MARKERNAME == "rs12186596")
 eur_pgc_howard_df <- eur_pgc_howard_df[-index[1],]
 write.table(eur_pgc_howard_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eur_pgc_howard_reformatted.txt",row.names=F,sep="\t",quote=F)
 
+# for MDD3 sumstats, including all cohorts
+eur_mdd3 <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/daner_pgc_mdd_full_eur_hg19_v3.49.24.05.rp.gz")
+eur_mdd3$EAF <- (eur_mdd3$FRQ_A_511755*eur_mdd3$Nca + eur_mdd3$FRQ_U_3072803*eur_mdd3$Nco)/(eur_mdd3$Nca+eur_mdd3$Nco)
+eur_mdd3$effN <- 2*eur_mdd3$EAF*(1-eur_mdd3$EAF)*(eur_mdd3$Nca+eur_mdd3$Nco)*eur_mdd3$INFO
+eur_mdd3$MARKERNAME <- addNewId(eur_mdd3,chr="CHR",pos="BP",A1="A1",A2="A2")
+eur_mdd3 <- eur_mdd3[eur_mdd3$INFO >=0.7 & eur_mdd3$effN >= 50,]
+eur_mdd3$Neff <- 2*eur_mdd3$Neff_half
+eur_mdd3_df <- eur_mdd3[,c("MARKERNAME","SNP","CHR","BP","A1","A2","EAF","OR","SE","P","Neff")]
+names(eur_mdd3_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","P","N")
+eur_mdd3_df$BETA <- log(eur_mdd3_df$OR)
+eur_mdd3_df$OR_95L <- exp(eur_mdd3_df$BETA-1.96*eur_mdd3_df$SE)
+eur_mdd3_df$OR_95U <- exp(eur_mdd3_df$BETA+1.96*eur_mdd3_df$SE)
+eur_mdd3_df <- eur_mdd3_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+eur_mdd3_df <- eur_mdd3_df[eur_mdd3_df$EA %in% ba & eur_mdd3_df$NEA %in% ba,]
+sum(grepl("e",eur_mdd3_df$MARKERNAME,fixed=TRUE))
+eur_mdd3_df[eur_mdd3_df$RSID=="rs9939609",]
+write.table(eur_mdd3_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
