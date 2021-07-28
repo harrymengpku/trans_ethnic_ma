@@ -2,16 +2,16 @@
 
 #########################################################
 #Each GWA study file has mandatory column headers:      #
-#1) MARKERNAME – snp name                               #
-#2) EA – effect allele                                  #
-#3) NEA – non effect allele                             #
-#4) OR - odds ratio                                     #
-#5) OR_95L - lower confidence interval of OR.           #
-#6) OR_95U - upper confidence interval of OR            #
-#7) EAF – effect allele frequency                       #
-#8) N - sample size                                     #
-#9) CHROMOSOME  - chromosome of marker                  #
-#10) POSITION - position of marker                      #
+#MARKERNAME, snp name                                   #
+#EA, effect allele                                      #
+#NEA, non effect allele                                 #
+#OR, odds ratio                                         #
+#OR_95L, lower confidence interval of OR.               #
+#OR_95U, upper confidence interval of OR                #
+#EAF, effect allele frequency                           #
+#N, sample size                                         #
+#CHROMOSOME, chromosome of marker                       #
+#POSITION, position of marker                           #
 #########################################################
 
 ### EAS
@@ -68,6 +68,12 @@ eas_converge_df$BETA <- log(eas_converge_df$OR)
 eas_converge_df <- eas_converge_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 table(eas_converge_df$EA)
 table(eas_converge_df$NEA)
+check <- MarkerNameCheck(eas_converge_df)
+sum(check)
+head(eas_converge_df[!check,])
+eas_converge_df <- eas_converge_df[check,]
+eas_converge_df <- eas_converge_df[order(eas_converge_df$CHROMOSOME,eas_converge_df$POSITION),]
+length(unique(eas_converge_df$MARKERNAME)) == nrow(eas_converge_df) # If FALSE, need to find duplicated markernames and delete properly.
 write.table(eas_converge_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 #cohort, whi
@@ -117,6 +123,13 @@ names(eas_whi_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EA
 eas_whi_df <- eas_whi_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 table(eas_whi_df$EA)
 table(eas_whi_df$NEA)
+check <- MarkerNameCheck(eas_whi_df)
+sum(check)
+head(eas_whi_df[!check,])
+eas_whi_df <- eas_whi_df[check,]
+eas_whi_df <- eas_whi_df[order(eas_whi_df$CHROMOSOME,eas_whi_df$POSITION),]
+length(unique(eas_whi_df$MARKERNAME)) == nrow(eas_whi_df) # If FALSE, need to find duplicated markernames and delete properly.
+
 write.table(eas_whi_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # CKB SYMPTOMS
@@ -133,6 +146,12 @@ ba <- c("A","G","C","T")
 eas_ckb_df <- eas_ckb_df[eas_ckb_df$EA %in% ba & eas_ckb_df$NEA %in% ba,]
 table(eas_ckb_df$EA)
 table(eas_ckb_df$NEA)
+check <- MarkerNameCheck(eas_ckb_df)
+sum(check)
+head(eas_ckb_df[!check,])
+eas_ckb_df <- eas_ckb_df[check,]
+eas_ckb_df <- eas_ckb_df[order(eas_ckb_df$CHROMOSOME,eas_ckb_df$POSITION),]
+length(unique(eas_ckb_df$MARKERNAME)) == nrow(eas_ckb_df) # If FALSE, need to find duplicated markernames and delete properly.
 write.table(eas_ckb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # BioME, SAIGE
@@ -144,6 +163,12 @@ eas_biome_df$OR_95U <- exp(eas_biome_df$BETA+1.96*eas_biome_df$SE)
 names(eas_biome_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","N","OR","OR_95L","OR_95U")
 eas_biome_df <- eas_biome_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_biome_df <- eas_biome_df[eas_biome_df$EA %in% ba & eas_biome_df$NEA %in% ba,]
+check <- MarkerNameCheck(eas_biome_df)
+sum(check)
+head(eas_biome_df[!check,])
+eas_biome_df <- eas_biome_df[check,]
+eas_biome_df <- eas_biome_df[order(eas_biome_df$CHROMOSOME,eas_biome_df$POSITION),]
+length(unique(eas_biome_df$MARKERNAME)) == nrow(eas_biome_df) # If FALSE, need to find duplicated markernames and delete properly.
 write.table(eas_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # UKB, plink, /SAN/ugi/mdd/ukb/mdd_gwas/eas/eas_pheno1_sr_plink_pcs_maf_qced_recoded.txt
@@ -155,6 +180,12 @@ names(eas_ukb_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","E
 eas_ukb_df <- eas_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_ukb_df <- eas_ukb_df[eas_ukb_df$EA %in% ba & eas_ukb_df$NEA %in% ba, ]
 eas_ukb_df[eas_ukb_df$RSID == "rs9939609",]
+check <- MarkerNameCheck(eas_ukb_df)
+sum(check)
+head(eas_ukb_df[!check,])
+eas_ukb_df <- eas_ukb_df[check,]
+eas_ukb_df <- eas_ukb_df[order(eas_ukb_df$CHROMOSOME,eas_ukb_df$POSITION),]
+length(unique(eas_ukb_df$MARKERNAME)) == nrow(eas_ukb_df) # If FALSE, need to find duplicated markernames and delete properly.
 write.table(eas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 
@@ -166,6 +197,18 @@ names(eas_army_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","
 eas_army_df <- eas_army_df[,c("MARKERNAME","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_army_df <- eas_army_df[eas_army_df$EA %in% ba & eas_army_df$NEA %in% ba, ]
 write.table(eas_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz")
+check <- MarkerNameCheck(eas_army_df)
+sum(check)
+head(eas_army_df[!check,])
+eas_army_df <- eas_army_df[check,]
+eas_army_df <- eas_army_df[order(eas_army_df$CHROMOSOME,eas_army_df$POSITION),]
+length(unique(eas_army_df$MARKERNAME)) == nrow(eas_army_df) 
+i <- findDuplicate(eas_army_df$MARKERNAME)
+eas_army_df[i,]
+eas_army_df <- eas_army_df[-i,]
+length(unique(eas_army_df$MARKERNAME)) == nrow(eas_army_df)
+write.table(eas_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 # IHS, plink
 eas_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.eas.depr.sumstats.qced.txt")
@@ -177,6 +220,15 @@ names(eas_ihs_df) = c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EA
 eas_ihs_df <- eas_ihs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_ihs_df <- eas_ihs_df[eas_ihs_df$EA %in% ba & eas_ihs_df$NEA %in% ba, ]
 write.table(eas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz")
+check <- MarkerNameCheck(eas_ihs_df)
+sum(check)
+head(eas_ihs_df[!check,])
+eas_ihs_df <- eas_ihs_df[check,]
+eas_ihs_df <- eas_ihs_df[order(eas_ihs_df$CHROMOSOME,eas_ihs_df$POSITION),]
+length(unique(eas_ihs_df$MARKERNAME)) == nrow(eas_ihs_df) 
+write.table(eas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
+
 
 # Taiwan1
 eas_taiwan1 <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform1_01072021_qced.txt")
@@ -189,6 +241,15 @@ eas_taiwan1_df$BETA <- log(eas_taiwan1_df$OR)
 eas_taiwan1_df <- eas_taiwan1_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_taiwan1_df <- eas_taiwan1_df[eas_taiwan1_df$EA %in% ba & eas_taiwan1_df$NEA %in% ba,]
 write.table(eas_taiwan1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_taiwan1_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt.gz")
+check <- MarkerNameCheck(eas_taiwan1_df)
+sum(check)
+head(eas_taiwan1_df[!check,])
+eas_taiwan1_df <- eas_taiwan1_df[check,]
+eas_taiwan1_df <- eas_taiwan1_df[order(eas_taiwan1_df$CHROMOSOME,eas_taiwan1_df$POSITION),]
+length(unique(eas_taiwan1_df$MARKERNAME)) == nrow(eas_taiwan1_df) # If FALSE, need to find duplicated markernames and delete properly.
+write.table(eas_taiwan1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt",row.names=F,sep="\t",quote=F)
+
 
 # Taiwan2
 eas_taiwan2 <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/Taiwan/taiwan_plotform2_01072021_qced.txt")
@@ -200,6 +261,15 @@ eas_taiwan2_df$BETA <- log(eas_taiwan2_df$OR)
 eas_taiwan2_df <- eas_taiwan2_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_taiwan2_df <- eas_taiwan2_df[eas_taiwan2_df$EA %in% ba & eas_taiwan2_df$NEA %in% ba,]
 write.table(eas_taiwan2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_taiwan2_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz")
+check <- MarkerNameCheck(eas_taiwan2_df)
+sum(check)
+head(eas_taiwan2_df[!check,])
+eas_taiwan2_df <- eas_taiwan2_df[check,]
+eas_taiwan2_df <- eas_taiwan2_df[order(eas_taiwan2_df$CHROMOSOME,eas_taiwan2_df$POSITION),]
+length(unique(eas_taiwan2_df$MARKERNAME)) == nrow(eas_taiwan2_df)
+write.table(eas_taiwan2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt",row.names=F,sep="\t",quote=F) 
+
 
 # 23andMe
 eas_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/east_asian/eas.mdd.sumstats.annotated.valid.qced.reformatted.txt")
@@ -210,6 +280,16 @@ eas_23andMe_df$OR_95L <- exp(eas_23andMe_df$BETA-1.96*eas_23andMe_df$SE)
 eas_23andMe_df$OR_95U <- exp(eas_23andMe_df$BETA+1.96*eas_23andMe_df$SE)
 eas_23andMe_df <- eas_23andMe_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 eas_23andMe_df <- eas_23andMe_df[eas_23andMe_df$EA %in% ba & eas_23andMe_df$NEA %in% ba,]
+write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_23andMe_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz")
+check <- MarkerNameCheck(eas_23andMe_df)
+sum(check)
+head(eas_23andMe_df[!check,])
+eas_23andMe_df <- eas_23andMe_df[check,]
+eas_23andMe_df <- eas_23andMe_df[order(eas_23andMe_df$CHROMOSOME,eas_23andMe_df$POSITION),]
+length(unique(eas_23andMe_df$MARKERNAME)) == nrow(eas_23andMe_df) 
+i <- findDuplicate(eas_23andMe_df$MARKERNAME)
+eas_23andMe_df <- eas_23andMe_df[-i,]
 write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## reformat for AFR data
@@ -226,17 +306,35 @@ names(afr_biome_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA",
 afr_biome_df <- afr_biome_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_biome_df <- afr_biome_df[afr_biome_df$EA %in% ba & afr_biome_df$NEA %in% ba,]
 write.table(afr_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_biome_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_biome_df)
+sum(check)
+head(afr_biome_df[!check,])
+afr_biome_df <- afr_biome_df[check,]
+afr_biome_df <- afr_biome_df[order(afr_biome_df$CHROMOSOME,afr_biome_df$POSITION),]
+length(unique(afr_biome_df$MARKERNAME)) == nrow(afr_biome_df)
+write.table(afr_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 # UKB
 afr_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/african/black_pheno1_sr_plink_pcs_maf_qced.txt")
 afr_ukb$xm.rsid <- ifelse(!is.na(afr_ukb$rsid.1KG),afr_ukb$rsid.1KG,afr_ukb$ID)
 afr_ukb_df <- afr_ukb[,c("newid","xm.rsid","CHROM","POS","newA1","newA2","EAF","OR","L95","U95","P","Neff","LOG.OR._SE")]
-
 names(afr_ukb_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","OR_95L","OR_95U","P","N","SE")
 afr_ukb_df$BETA <- log(afr_ukb_df$OR)
 afr_ukb_df <- afr_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
 afr_ukb_df <- afr_ukb_df[afr_ukb_df$EA %in% ba & afr_ukb_df$NEA %in% ba,]
 sum(grepl("e",afr_ukb_df$MARKERNAME,fixed=TRUE))
+write.table(afr_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_ukb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_ukb_df)
+sum(check)
+head(afr_ukb_df[!check,])
+afr_ukb_df <- afr_ukb_df[check,]
+afr_ukb_df <- afr_ukb_df[order(afr_ukb_df$CHROMOSOME,afr_ukb_df$POSITION),]
+length(unique(afr_ukb_df$MARKERNAME)) == nrow(afr_ukb_df) 
+i <- findDuplicate(afr_ukb_df$MARKERNAME)
+afr_ukb_df[i,]
+afr_ukb_df <- afr_ukb_df[-i[2],]
 write.table(afr_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # drakenstein
@@ -249,6 +347,18 @@ afr_safr_df <- afr_safr_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","
 afr_safr_df <- afr_safr_df[afr_safr_df$EA %in% ba & afr_safr_df$NEA %in% ba,]
 sum(grepl("e",afr_safr_df$MARKERNAME,fixed=TRUE))
 write.table(afr_safr_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_safr_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_safr_df)
+sum(check)
+head(afr_safr_df[!check,])
+afr_safr_df <- afr_safr_df[check,]
+afr_safr_df <- afr_safr_df[order(afr_safr_df$CHROMOSOME,afr_safr_df$POSITION),]
+length(unique(afr_safr_df$MARKERNAME)) == nrow(afr_safr_df) 
+i <- findDuplicate(afr_safr_df$MARKERNAME)
+afr_safr_df[i,]
+j <- i[-26]
+afr_safr_df <- afr_safr_df[-j,]
+write.table(afr_safr_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # army
 afr_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_black_qced_updated.txt")
@@ -260,7 +370,17 @@ afr_army_df <- afr_army_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","
 afr_army_df <- afr_army_df[afr_army_df$EA %in% ba & afr_army_df$NEA %in% ba,]
 sum(grepl("e",afr_army_df$MARKERNAME,fixed=TRUE))
 write.table(afr_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+afr_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_army_df)
+sum(check)
+head(afr_army_df[!check,])
+afr_army_df <- afr_army_df[check,]
+afr_army_df <- afr_army_df[order(afr_army_df$CHROMOSOME,afr_army_df$POSITION),]
+length(unique(afr_army_df$MARKERNAME)) == nrow(afr_army_df)
+i <- findDuplicate(afr_army_df$MARKERNAME)
+afr_army_df <- afr_army_df[-i,]
+write.table(afr_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt",row.names=F,sep="\t",quote=F)
+ 
 # whi-share
 afr_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_aa/res_aa_200226_qced_30062021.txt")
 afr_whi_share_df <- afr_whi_share[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
@@ -271,7 +391,14 @@ afr_whi_share_df <- afr_whi_share_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITI
 afr_whi_share_df <- afr_whi_share_df[afr_whi_share_df$EA %in% ba & afr_whi_share_df$NEA %in% ba,]
 sum(grepl("e",afr_whi_share_df$MARKERNAME,fixed=TRUE))
 write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+afr_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_whi_share_df)
+sum(check)
+head(afr_whi_share_df[!check,])
+afr_whi_share_df <- afr_whi_share_df[check,]
+afr_whi_share_df <- afr_whi_share_df[order(afr_whi_share_df$CHROMOSOME,afr_whi_share_df$POSITION),]
+length(unique(afr_whi_share_df$MARKERNAME)) == nrow(afr_whi_share_df)
+write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 # whi-page
 afr_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/aa_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
@@ -283,6 +410,18 @@ afr_whi_page_df <- afr_whi_page_df[afr_whi_page_df$EA %in% ba & afr_whi_page_df$
 sum(grepl("e",afr_whi_page_df$MARKERNAME,fixed=TRUE))
 write.table(afr_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
 # Question: Nearly half of rsids is missing? Reason and what to do?
+# Answer: Keep them for now, as long as they are with valid chr and pos
+afr_whi_page_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_whi_page_df)
+sum(check)
+head(afr_whi_page_df[!check,])
+afr_whi_page_df <- afr_whi_page_df[check,]
+afr_whi_page_df <- afr_whi_page_df[order(afr_whi_page_df$CHROMOSOME,afr_whi_page_df$POSITION),]
+length(unique(afr_whi_page_df$MARKERNAME)) == nrow(afr_whi_page_df)
+i <- findDuplicate(afr_whi_page_df$MARKERNAME)
+# 23719 lines with duplicated newid, delete them all,
+afr_whi_page_df <- afr_whi_page_df[-i,] 
+write.table(afr_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # ihs
 afr_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.afr.depr.sumstats.qced.txt")
@@ -300,7 +439,14 @@ afr_ihs_df <- afr_ihs_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NE
 afr_ihs_df <- afr_ihs_df[afr_ihs_df$EA %in% ba & afr_ihs_df$NEA %in% ba,]
 sum(grepl("e",afr_ihs_df$MARKERNAME,fixed=TRUE))
 write.table(afr_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+afr_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_ihs_df)
+sum(check)
+head(afr_ihs_df[!check,])
+afr_ihs_df <- afr_ihs_df[check,]
+afr_ihs_df <- afr_ihs_df[order(afr_ihs_df$CHROMOSOME,afr_ihs_df$POSITION),]
+length(unique(afr_ihs_df$MARKERNAME)) == nrow(afr_ihs_df)
+write.table(afr_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 # 23andMe
 afr_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/african_american/afr.mdd.sumstats.annotated.valid.qced.reformatted.txt")
@@ -311,6 +457,16 @@ afr_23andMe_df$OR_95L <- exp(afr_23andMe_df$BETA - 1.96*afr_23andMe_df$SE)
 afr_23andMe_df$OR_95U <- exp(afr_23andMe_df$BETA + 1.96*afr_23andMe_df$SE)
 afr_23andMe_df <- afr_23andMe_df[afr_23andMe_df$EA %in% ba & afr_23andMe_df$NEA %in% ba,]
 sum(grepl("e",afr_23andMe_df$MARKERNAME,fixed=TRUE))
+write.table(afr_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_23andMe_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_23andMe_df)
+sum(check)
+head(afr_23andMe_df[!check,])
+afr_23andMe_df <- afr_23andMe_df[check,]
+afr_23andMe_df <- afr_23andMe_df[order(afr_23andMe_df$CHROMOSOME,afr_23andMe_df$POSITION),]
+length(unique(afr_23andMe_df$MARKERNAME)) == nrow(afr_23andMe_df) 
+i <- findDuplicate(afr_23andMe_df$MARKERNAME)
+afr_23andMe_df <- afr_23andMe_df[-i,]
 write.table(afr_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # jhs
@@ -323,6 +479,14 @@ afr_jhs_df <- afr_jhs_df[afr_jhs_df$EA %in% ba & afr_jhs_df$NEA %in% ba,]
 sum(grepl("e",afr_jhs_df$MARKERNAME,fixed=TRUE))
 afr_jhs_df[afr_jhs_df$RSID=="rs9939609",]
 write.table(afr_jhs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_jhs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_jhs_df)
+sum(check)
+head(afr_jhs_df[!check,])
+afr_jhs_df <- afr_jhs_df[check,]
+afr_jhs_df <- afr_jhs_df[order(afr_jhs_df$CHROMOSOME,afr_jhs_df$POSITION),]
+length(unique(afr_jhs_df$MARKERNAME)) == nrow(afr_jhs_df)
+write.table(afr_jhs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 # biovu
 afr_biovu <- fread("/SAN/ugi/mdd/african_ma/data/051821_BioVU_MDD_AFR_Cov_SAIGE_GWAS_qced.txt")
@@ -337,6 +501,14 @@ afr_biovu_df <- afr_biovu_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA"
 afr_biovu_df <- afr_biovu_df[afr_biovu_df$EA %in% ba & afr_biovu_df$NEA %in% ba,]
 sum(grepl("e",afr_biovu_df$MARKERNAME,fixed=TRUE))
 afr_biovu_df[afr_biovu_df$RSID=="rs9939609",]
+write.table(afr_biovu_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_biovu_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_biovu_df)
+sum(check)
+head(afr_biovu_df[!check,])
+afr_biovu_df <- afr_biovu_df[check,]
+afr_biovu_df <- afr_biovu_df[order(afr_biovu_df$CHROMOSOME,afr_biovu_df$POSITION),]
+length(unique(afr_biovu_df$MARKERNAME)) == nrow(afr_biovu_df) 
 write.table(afr_biovu_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # MVP
@@ -354,6 +526,16 @@ afr_mvp_df <- afr_mvp_df[afr_mvp_df$EA %in% ba & afr_mvp_df$NEA %in% ba,]
 sum(grepl("e",afr_mvp_df$MARKERNAME,fixed=TRUE))
 afr_mvp_df[afr_mvp_df$RSID=="rs9939609",]
 write.table(afr_mvp_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_mvp_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_mvp_df)
+sum(check)
+head(afr_mvp_df[!check,])
+afr_mvp_df <- afr_mvp_df[check,]
+afr_mvp_df <- afr_mvp_df[order(afr_mvp_df$CHROMOSOME,afr_mvp_df$POSITION),]
+length(unique(afr_mvp_df$MARKERNAME)) == nrow(afr_mvp_df)
+i <- findDuplicate(afr_mvp_df$MARKERNAME)
+afr_mvp_df <- afr_mvp_df[-i,]
+write.table(afr_mvp_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 ## Reformatting for SAS data
 # UKB, plink
@@ -366,6 +548,14 @@ sas_ukb_df <- sas_ukb_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NE
 sas_ukb_df <- sas_ukb_df[sas_ukb_df$EA %in% ba & sas_ukb_df$NEA %in% ba,]
 sum(grepl("e",sas_ukb_df$MARKERNAME,fixed=TRUE))
 sas_ukb_df[sas_ukb_df$RSID=="rs9939609",]
+write.table(sas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
+sas_ukb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz")
+check <- MarkerNameCheck(sas_ukb_df)
+sum(check)
+head(sas_ukb_df[!check,])
+sas_ukb_df <- sas_ukb_df[check,]
+sas_ukb_df <- sas_ukb_df[order(sas_ukb_df$CHROMOSOME,sas_ukb_df$POSITION),]
+length(unique(sas_ukb_df$MARKERNAME)) == nrow(sas_ukb_df) 
 write.table(sas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # IHS, plink
@@ -380,6 +570,15 @@ sas_ihs_df <- sas_ihs_df[sas_ihs_df$EA %in% ba & sas_ihs_df$NEA %in% ba,]
 sum(grepl("e",sas_ihs_df$MARKERNAME,fixed=TRUE))
 sas_ihs_df[sas_ihs_df$RSID=="rs9939609",]
 write.table(sas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
+sas_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz")
+check <- MarkerNameCheck(sas_ihs_df)
+sum(check)
+head(sas_ihs_df[!check,])
+sas_ihs_df <- sas_ihs_df[check,]
+sas_ihs_df <- sas_ihs_df[order(sas_ihs_df$CHROMOSOME,sas_ihs_df$POSITION),]
+length(unique(sas_ihs_df$MARKERNAME)) == nrow(sas_ihs_df) 
+write.table(sas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
+
 
 # G&H, SAIGE, version 1 (ICD diagnosis based)
 sas_gh_v1 <- fread("/SAN/ugi/gh/MDD/saige3_S15_Depression1_2020_07_24.completegwas.qced.SAIGE.txt")
@@ -393,6 +592,14 @@ sas_gh_v1_df <- sas_gh_v1_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA"
 sas_gh_v1_df <- sas_gh_v1_df[sas_gh_v1_df$EA %in% ba & sas_gh_v1_df$NEA %in% ba,]
 sum(grepl("e",sas_gh_v1_df$MARKERNAME,fixed=TRUE))
 sas_gh_v1_df[sas_gh_v1_df$RSID=="rs9939609",]
+write.table(sas_gh_v1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt",row.names=F,sep="\t",quote=F)
+sas_gh_v1_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz")
+check <- MarkerNameCheck(sas_gh_v1_df)
+sum(check)
+head(sas_gh_v1_df[!check,])
+sas_gh_v1_df <- sas_gh_v1_df[check,]
+sas_gh_v1_df <- sas_gh_v1_df[order(sas_gh_v1_df$CHROMOSOME,sas_gh_v1_df$POSITION),]
+length(unique(sas_gh_v1_df$MARKERNAME)) == nrow(sas_gh_v1_df) 
 write.table(sas_gh_v1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # G&H, SAIGE, version 2 (considering also cases diagnosed with 'anxiety with depression')
@@ -408,7 +615,14 @@ sas_gh_v2_df <- sas_gh_v2_df[sas_gh_v2_df$EA %in% ba & sas_gh_v2_df$NEA %in% ba,
 sum(grepl("e",sas_gh_v2_df$MARKERNAME,fixed=TRUE))
 sas_gh_v2_df[sas_gh_v2_df$RSID=="rs9939609",]
 write.table(sas_gh_v2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v2_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+sas_gh_v2_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v2_reformatted.txt.gz")
+check <- MarkerNameCheck(sas_gh_v2_df)
+sum(check)
+head(sas_gh_v2_df[!check,])
+sas_gh_v2_df <- sas_gh_v2_df[check,]
+sas_gh_v2_df <- sas_gh_v2_df[order(sas_gh_v2_df$CHROMOSOME,sas_gh_v2_df$POSITION),]
+length(unique(sas_gh_v2_df$MARKERNAME)) == nrow(sas_gh_v2_df) 
+write.table(sas_gh_v2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v2_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## Reformatting for HIS data
 # 23andMe, logistic regression
@@ -423,6 +637,16 @@ his_23andMe_df <- his_23andMe_df[his_23andMe_df$EA %in% ba & his_23andMe_df$NEA 
 sum(grepl("e",his_23andMe_df$MARKERNAME,fixed=TRUE))
 his_23andMe_df[his_23andMe_df$RSID=="rs9939609",]
 write.table(his_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_23andMe_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz")
+check <- MarkerNameCheck(his_23andMe_df)
+sum(check)
+head(his_23andMe_df[!check,])
+his_23andMe_df <- his_23andMe_df[check,]
+his_23andMe_df <- his_23andMe_df[order(his_23andMe_df$CHROMOSOME,his_23andMe_df$POSITION),]
+length(unique(his_23andMe_df$MARKERNAME)) == nrow(his_23andMe_df) 
+i <- findDuplicate(his_23andMe_df$MARKERNAME)
+his_23andMe_df <- his_23andMe_df[-i,]
+write.table(his_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # WHI Page, plink
 his_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/ha_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
@@ -433,6 +657,16 @@ his_whi_page_df <- his_whi_page_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION
 his_whi_page_df <- his_whi_page_df[his_whi_page_df$EA %in% ba & his_whi_page_df$NEA %in% ba,]
 sum(grepl("e",his_whi_page_df$MARKERNAME,fixed=TRUE))
 his_whi_page_df[his_whi_page_df$RSID=="rs9939609",]
+write.table(his_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_whi_page_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt.gz")
+check <- MarkerNameCheck(his_whi_page_df)
+sum(check)
+head(his_whi_page_df[!check,])
+his_whi_page_df <- his_whi_page_df[check,]
+his_whi_page_df <- his_whi_page_df[order(his_whi_page_df$CHROMOSOME,his_whi_page_df$POSITION),]
+length(unique(his_whi_page_df$MARKERNAME)) == nrow(his_whi_page_df) 
+i <- findDuplicate(his_whi_page_df$MARKERNAME)
+his_whi_page_df <- his_whi_page_df[-i,]
 write.table(his_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # WHI Share, plink
@@ -446,6 +680,14 @@ his_whi_share_df <- his_whi_share_df[his_whi_share_df$EA %in% ba & his_whi_share
 sum(grepl("e",his_whi_share_df$MARKERNAME,fixed=TRUE))
 his_whi_share_df[his_whi_share_df$RSID=="rs9939609",]
 write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt.gz")
+check <- MarkerNameCheck(his_whi_share_df)
+sum(check)
+head(his_whi_share_df[!check,])
+his_whi_share_df <- his_whi_share_df[check,]
+his_whi_share_df <- his_whi_share_df[order(his_whi_share_df$CHROMOSOME,his_whi_share_df$POSITION),]
+length(unique(his_whi_share_df$MARKERNAME)) == nrow(his_whi_share_df) 
+write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # Army-Starss, plink
 his_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_hisp_effn_qced_07042021.txt.gz")
@@ -458,7 +700,14 @@ his_army_df <- his_army_df[his_army_df$EA %in% ba & his_army_df$NEA %in% ba,]
 sum(grepl("e",his_army_df$MARKERNAME,fixed=TRUE))
 his_army_df[his_army_df$RSID=="rs9939609",]
 write.table(his_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+his_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz")
+check <- MarkerNameCheck(his_army_df)
+sum(check)
+head(his_army_df[!check,])
+his_army_df <- his_army_df[check,]
+his_army_df <- his_army_df[order(his_army_df$CHROMOSOME,his_army_df$POSITION),]
+length(unique(his_army_df$MARKERNAME)) == nrow(his_army_df) 
+write.table(his_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # BioMe, SAIGE
 his_biome <- fread("/SAN/ugi/mdd/sumstats/BioMe/MDDSAIGE.HA.updated.effN.qced.txt")
@@ -475,6 +724,14 @@ his_biome_df <- his_biome_df[his_biome_df$EA %in% ba & his_biome_df$NEA %in% ba,
 sum(grepl("e",his_biome_df$MARKERNAME,fixed=TRUE))
 his_biome_df[his_biome_df$RSID=="rs9939609",]
 write.table(his_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_biome_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz")
+check <- MarkerNameCheck(his_biome_df)
+sum(check)
+head(his_biome_df[!check,])
+his_biome_df <- his_biome_df[check,]
+his_biome_df <- his_biome_df[order(his_biome_df$CHROMOSOME,his_biome_df$POSITION),]
+length(unique(his_biome_df$MARKERNAME)) == nrow(his_biome_df)
+write.table(his_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt",row.names=F,sep="\t",quote=F) 
 
 ## Reformatting for EUR
 # Now only use sumstats from Howard
@@ -517,5 +774,13 @@ eur_mdd3_df <- eur_mdd3_df[eur_mdd3_df$EA %in% ba & eur_mdd3_df$NEA %in% ba,]
 sum(grepl("e",eur_mdd3_df$MARKERNAME,fixed=TRUE))
 eur_mdd3_df[eur_mdd3_df$RSID=="rs9939609",]
 write.table(eur_mdd3_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt",row.names=F,sep="\t",quote=F)
+eur_mdd3_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz")
+check <- MarkerNameCheck(eur_mdd3_df)
+sum(check)
+head(eur_mdd3_df[!check,])
+eur_mdd3_df <- eur_mdd3_df[check,]
+eur_mdd3_df <- eur_mdd3_df[order(eur_mdd3_df$CHROMOSOME,eur_mdd3_df$POSITION),]
+length(unique(eur_mdd3_df$MARKERNAME)) == nrow(eur_mdd3_df) 
+# all check pass for eur mdd3, no need to write out again.
 
 

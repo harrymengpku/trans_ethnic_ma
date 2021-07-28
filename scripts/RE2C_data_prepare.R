@@ -24,9 +24,15 @@ for (i in 1:length(l)) {
   
   message("The number of markers for the ",i,"th file is: ",nrow(f))
   rm(f)
+  message("The merged data frame have: ",nrow(df_o)," rows.")  
   message("Complete preparation for file ",i," successfully")
   message("==========")
 }
+message("The current data frame has ",nrow(df_o)," rows and ", ncol(df_o)," columns")
+message("Remove markers present in less than two cohorts:")
+df_o$na_count <- apply(df_o[,2:ncol(df_o)], 1, function(x) sum(!is.na(x)))
+df_o <- df_o[df_o$na_count >=4, ]
+df_o <- df_o[,!"na_count"]
 message("The final data frame has ",nrow(df_o)," rows and ", ncol(df_o)," columns")
 write.table(df_o,out_file_name,sep="\t",row.names=F,col.names=F,quote=F)
 t2 <- Sys.time()
