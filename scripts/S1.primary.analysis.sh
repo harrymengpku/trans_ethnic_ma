@@ -1,17 +1,24 @@
-#$ -S /bin/bash
-#$ -l h_rt=240:0:0
-#$ -l h_vmem=128G,tmem=128G
-#$ -cwd
-#$ -j y
-#$ -N primary.analysis
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH -t 120:00:00
 
-WD="/SAN/ugi/mdd/trans_ethnic_ma"
-#/SAN/ugi/mdd/MR-MEGA/MR-MEGA -i $WD/scripts/mr_mega.in.txt --pc 5 -o $WD/results/AFR.EAS.SAS.HIS.MDD3SUM.MRMEGA
-#R --vanilla --slave --args $WD/scripts/RE2C.file.list.txt $WD/data/RE2C.in.txt < $WD/scripts/RE2C_data_prepare.R
-#bash /SAN/ugi/mdd/RE2C/RE2C.bash --input $WD/data/RE2C.in.txt  --threads 4 --output $WD/results/RE2C.out
-
-# fixed effect MA with Metal, weighted by SE
+WD="/home/xmeng/trans_ethnic_ma"
+# MR-MEGA
+echo "Start MR-MEGA analysis."
+MR-MEGA -i $WD/scripts/mr_mega.in.txt --pc 3 -o $WD/results/AFR.EAS.SAS.HIS.MDD3SUM.MRMEGA
+echo "MR-MEGA finished."
+echo "=========="
+# fixed effect MA with Metal, weighted by SE (METAL)
+echo "Start fixed effect meta-analysis."
 bash $WD/scripts/Metal_FE_script_generator.sh
-/share/apps/genomics/metal-2011-3-25/metal < $WD/scripts/METAL_FE.txt
+metal < $WD/scripts/METAL_FE.txt
+echo "Fixed effect meta-analysis finished."
+echo "=========="
 
+# randome effect meta-analysis (RE2C)
+echo "Start Random effect meta-analysis."
+/sw/arch/Debian10/EB_production/2021/software/R/4.1.0-foss-2021a/bin/R --vanilla --slave --args $WD/scripts/RE2C.file.list.txt $WD/data/RE2C.in.txt < $WD/scripts/RE2C_data_prepare.R
+bash /home/xmeng/bin/RE2C/RE2C.bash --input $WD/data/RE2C.in.txt  --threads 4 --output $WD/results/RE2C.out
+echo "Random effect meta-analysis finished."
+echo "=========="
 

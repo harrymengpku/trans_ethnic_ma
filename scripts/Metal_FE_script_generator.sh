@@ -1,5 +1,5 @@
 #!/bin/bash
-WD="/SAN/ugi/mdd/trans_ethnic_ma"
+WD="/home/xmeng/trans_ethnic_ma"
 echo "SCHEME STDERR" > $WD/scripts/METAL_FE.txt
 echo "STDERR SE" >> $WD/scripts/METAL_FE.txt
 echo "AVERAGEFREQ ON" >> $WD/scripts/METAL_FE.txt

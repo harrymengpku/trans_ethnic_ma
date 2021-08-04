@@ -9,7 +9,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -17,7 +17,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_army_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -25,7 +25,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -33,7 +33,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -41,7 +41,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -49,7 +49,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_jhs_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -57,7 +57,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -65,7 +65,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -73,7 +73,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -81,7 +81,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_whi_page_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -89,7 +89,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -97,7 +97,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -105,7 +105,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_army_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -113,7 +113,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -121,7 +121,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -129,7 +129,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -137,7 +137,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -145,7 +145,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -153,7 +153,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -161,7 +161,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -169,7 +169,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/eas_whi_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -177,7 +177,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -185,7 +185,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/his_army_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -193,7 +193,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/his_biome_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -201,7 +201,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/his_whi_page_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -209,7 +209,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/his_whi_share_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -217,7 +217,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -225,7 +225,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -233,7 +233,7 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz
+PROCESS /home/xmeng/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz
 #NewStudy
 MARKERLABEL MARKERNAME
 ALLELELABELS EA NEA
@@ -241,6 +241,6 @@ EFFECTLABEL BETA
 PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
-PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz
-OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_ .tbl
+PROCESS /home/xmeng/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz
+OUTFILE /home/xmeng/trans_ethnic_ma/results/METAANALYSIS_FE_ .tbl
 ANALYZE HETEROGENEITY
