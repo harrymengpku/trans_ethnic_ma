@@ -5,6 +5,10 @@ library(data.table)
 df <- fread("METAANALYSIS_FE_1.tbl")
 
 # Read 1000G all bim files and create a FileName column to store filenames
+list_of_files <- list.files(path = "/SAN/ugi/ukhls/1000G/1KGP3_bim", recursive = TRUE,
+                            pattern = "\\.bim.gz$", 
+                            full.names = TRUE)
+
 DT <- rbindlist(sapply(list_of_files, fread, simplify = FALSE),
                 use.names = TRUE)
 

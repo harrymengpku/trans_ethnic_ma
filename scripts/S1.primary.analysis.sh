@@ -1,6 +1,8 @@
 #!/bin/bash
 #SBATCH -N 1
 #SBATCH -t 120:00:00
+#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-user=xiangrui.meng@ucl.ac.uk
 
 WD="/home/xmeng/trans_ethnic_ma"
 # MR-MEGA
