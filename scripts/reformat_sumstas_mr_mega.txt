@@ -784,3 +784,46 @@ length(unique(eur_mdd3_df$MARKERNAME)) == nrow(eur_mdd3_df)
 # all check pass for eur mdd3, no need to write out again.
 
 
+# whi-share aa and ha data has been reanalyzed, run new refomatting for new results
+# whi-share
+ba <- c("A","C","G","T")
+afr_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink/res_aa_210831_qced.txt")
+afr_whi_share_df <- afr_whi_share[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
+afr_whi_share_df$OR_95L <- exp(afr_whi_share_df$BETA - 1.96*afr_whi_share_df$SE)
+afr_whi_share_df$OR_95U <- exp(afr_whi_share_df$BETA + 1.96*afr_whi_share_df$SE)
+names(afr_whi_share_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
+afr_whi_share_df <- afr_whi_share_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+afr_whi_share_df <- afr_whi_share_df[afr_whi_share_df$EA %in% ba & afr_whi_share_df$NEA %in% ba,]
+sum(grepl("e",afr_whi_share_df$MARKERNAME,fixed=TRUE))
+#write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted_210901.txt",row.names=F,sep="\t",quote=F)
+afr_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz")
+check <- MarkerNameCheck(afr_whi_share_df)
+sum(check)
+head(afr_whi_share_df[!check,])
+afr_whi_share_df <- afr_whi_share_df[check,]
+afr_whi_share_df <- afr_whi_share_df[order(afr_whi_share_df$CHROMOSOME,afr_whi_share_df$POSITION),]
+length(unique(afr_whi_share_df$MARKERNAME)) == nrow(afr_whi_share_df)
+write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted_210901.txt",row.names=F,sep="\t",quote=F) 
+
+# WHI Share, plink
+his_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_ha/res_ha_210901_qced.txt")
+his_whi_share_df <- his_whi_share[,c("newid","rsid.1KG","chr.1KG","pos.1KG","EA","OA","EAF","OR","SE","BETA","P","Neff")]
+his_whi_share_df$OR_95L <- exp(his_whi_share_df$BETA - 1.96*his_whi_share_df$SE)
+his_whi_share_df$OR_95U <- exp(his_whi_share_df$BETA + 1.96*his_whi_share_df$SE)
+names(his_whi_share_df) <- c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","OR","SE","BETA","P","N","OR_95L","OR_95U")
+his_whi_share_df <- his_whi_share_df[,c("MARKERNAME","RSID","CHROMOSOME","POSITION","EA","NEA","EAF","BETA","SE","P","OR","OR_95L","OR_95U","N")]
+his_whi_share_df <- his_whi_share_df[his_whi_share_df$EA %in% ba & his_whi_share_df$NEA %in% ba,]
+sum(grepl("e",his_whi_share_df$MARKERNAME,fixed=TRUE))
+his_whi_share_df[his_whi_share_df$RSID=="rs9939609",]
+#write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted_210901.txt",row.names=F,sep="\t",quote=F)
+#his_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt.gz")
+check <- MarkerNameCheck(his_whi_share_df)
+sum(check)
+head(his_whi_share_df[!check,])
+his_whi_share_df <- his_whi_share_df[check,]
+his_whi_share_df <- his_whi_share_df[order(his_whi_share_df$CHROMOSOME,his_whi_share_df$POSITION),]
+length(unique(his_whi_share_df$MARKERNAME)) == nrow(his_whi_share_df) 
+write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted_210901.txt",row.names=F,sep="\t",quote=F)
+
+
+
