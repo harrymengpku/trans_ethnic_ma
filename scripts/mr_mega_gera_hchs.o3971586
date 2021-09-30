@@ -1,0 +1,189 @@
+Start MR-MEGA analysis.
+###################
+# MR-MEGA v.0.2
+###################
+
+Using following command line options:
+Input file: /SAN/ugi/mdd/trans_ethnic_ma/scripts/mr_mega.in.txt
+Output result file: /SAN/ugi/mdd/trans_ethnic_ma/results/MRMEGA.GERA.HCHS.result
+Output log file: /SAN/ugi/mdd/trans_ethnic_ma/results/MRMEGA.GERA.HCHS.log
+Number of PC-s in regression: 5
+Program will only print the PCs and die without running meta-analysis!
+Binary trait analysis (expecting columns OR, OR_95L, OR_95U)
+P-value threshold for showing cohort effect direction: 1
+No column filters set
+Column names:
+	Marker name: MARKERNAME
+	Effect allele: EA
+	Other allele: NEA
+	Effect allele frequency: EAF
+	Effect (OR): OR
+	Upper CI of effect: OR_95U
+	Lower CI of effect: OR_95L
+	Strand: STRAND
+	Sample size: N
+	Chromosome: CHROMOSOME
+	Position: POSITION
+Reading cohort list file...
+Processing files...
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01661
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.02158
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01664
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 0.99612
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0943
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.02772
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.05411
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0127
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted_210901.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.00797
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0159
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.06057
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 0.995719
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.02032
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Problem with effect size for marker 1:1218754:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1269893:C:T(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1316157:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1322735:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1378008:C:G(OR: NA, CI_95L: NA, CI_95U: NA
+	Altogether 7406 similar errors
+	Marker filtering:
+Lambda: 1.08319
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.03356
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01355
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.03818
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0834
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0119
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.00022
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted_210901.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.02345
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01305
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.03587
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01758
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.51454
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 0.988745
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.02649
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.01253
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/lat_gera_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.00819
+Calculating the number of markers present in all cohorts and with MAF>1%...
+Altogether 786472 good markers.
+Selected 2133 independent variants for EAF correlation calculation
+Calculating distance matrix...
+Calculating MDS between cohorts...
+PCs PC0 PC1 PC2 PC3 PC4
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz -0.0962038 0.0143915 -0.00162908 0.00622403 -0.00282775
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz -0.114645 0.032294 -0.00015552 0.00045372 -0.00429294
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz -0.116569 0.0345786 0.000575631 -0.00087216 -0.00504851
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz -0.111209 0.0281885 -0.000588403 0.00195612 -0.0034461
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz -0.117887 0.0348344 0.00110022 -0.000774694 -0.00537767
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz -0.116177 0.0337261 0.000249215 0.000165694 -0.00445169
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz -0.10748 0.0363856 0.00987404 -0.00812406 0.0396665
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz -0.124022 0.0389798 0.00119345 -0.0012973 -0.00575997
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted_210901.txt.gz -0.10885 0.0260861 -0.000680405 0.00306976 -0.00404904
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz 0.113935 0.0452576 -0.00199545 0.000518312 2.15891e-06
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz 0.0874102 0.0164285 0.00239837 0.0082728 0.00158594
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz 0.108025 0.03897 0.000633664 0.00164003 0.000481029
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz 0.115099 0.0469699 -0.00446887 -0.000543455 -0.000602163
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz 0.115318 0.0469993 -0.00480702 -0.000883817 -0.00101336
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz 0.114562 0.0449916 -0.00303888 0.000997291 -8.45016e-05
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz 0.115762 0.0484631 -0.00379713 0.00133515 -0.000292714
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz 0.114458 0.0453484 -0.00136539 0.000280325 -0.000650656
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz 0.010753 -0.0749828 -0.0232013 0.0045173 0.00152399
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz 0.00835506 -0.0647638 -0.0274303 -0.0108126 -0.000613229
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz -0.0233412 -0.0464417 -0.0188164 -0.00125487 -0.000145802
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted_210901.txt.gz 0.0133212 -0.0716588 -0.0282645 -0.00930229 0.00016972
+/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz 0.0298942 -0.0537724 0.0576432 -0.00561606 -0.00241103
+/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz 0.0236831 -0.0664682 0.0620329 -0.00517771 -0.00218236
+/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz 0.0221432 -0.0678508 0.0594241 -0.00385143 -0.00139871
+/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz 0.00521104 -0.0969847 -0.0116275 0.047023 0.00595071
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz 0.00599057 -0.0623793 -0.029021 -0.0161651 -0.000965006
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz -0.105366 0.0222574 -0.00092756 0.00439588 -0.00376936
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt.gz 0.114623 0.0448211 -0.00108929 0.00110897 0.000545845
+/SAN/ugi/mdd/trans_ethnic_ma/data/lat_gera_reformatted.txt.gz 0.0232054 -0.074669 -0.0322208 -0.0172829 -0.000543365
+
+Time to die...
+MR-MEGA finished.
+==========

@@ -23,3 +23,7 @@
 /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz
 /SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz
 /SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/lat_gera_reformatted.txt.gz

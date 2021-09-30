@@ -1,0 +1,75 @@
+SCHEME STDERR
+STDERR SE
+AVERAGEFREQ ON
+MINMAXFREQ ON
+
+#Study1: HIS 23andMe 
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA 
+EFFECTLABEL BETA
+PVALUELABEL P
+FREQLABEL EAF
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz
+
+#Study2: HIS WHI Page
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt.gz
+
+#Study3: HIS WHI Share
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted_210901.txt.gz
+
+#Study4: HIS Army
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz
+
+#Study5: HIS Biome
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz
+
+#Study6: HIS HCHS
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz
+
+#Study7: HIS GERA
+MARKERLABEL MARKERNAME 
+ALLELELABELS EA NEA     
+EFFECTLABEL BETA
+PVALUELABEL P      
+FREQLABEL EAF       
+STDERR SE
+PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/lat_gera_reformatted.txt.gz
+
+OUTFILE METAANALYSIS_HIS_ .tbl
+ANALYZE HETEROGENEITY
+
+CLEAR
+QUIT
+
+
