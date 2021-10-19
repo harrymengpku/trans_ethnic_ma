@@ -1,0 +1,12 @@
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz

@@ -1,5 +1,5 @@
 #!/bin/bash
-WD="/home/xmeng/trans_ethnic_ma"
+WD="/SAN/ugi/mdd/trans_ethnic_ma"
 echo "SCHEME STDERR" > $WD/scripts/METAL_FE.txt
 echo "STDERR SE" >> $WD/scripts/METAL_FE.txt
 echo "AVERAGEFREQ ON" >> $WD/scripts/METAL_FE.txt
@@ -14,8 +14,8 @@ echo "PVALUELABEL P" >> $WD/scripts/METAL_FE.txt
 echo "FREQLABEL EAF" >> $WD/scripts/METAL_FE.txt
 echo "STDERR SE" >> $WD/scripts/METAL_FE.txt   
 echo "PROCESS $line" >> $WD/scripts/METAL_FE.txt
-done < $WD/scripts/RE2C.file.list.txt
+done < $WD/scripts/fe.all.ancestry.in.txt
 
-echo OUTFILE $WD/results/METAANALYSIS_FE_ .tbl >> $WD/scripts/METAL_FE.txt 
+echo OUTFILE $WD/results/METAANALYSIS_FE_ALL_ANCESTRY .tbl >> $WD/scripts/METAL_FE.txt 
 echo "ANALYZE HETEROGENEITY" >> $WD/scripts/METAL_FE.txt 
 

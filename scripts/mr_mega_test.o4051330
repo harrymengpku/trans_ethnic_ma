@@ -1,0 +1,111 @@
+Start MR-MEGA analysis.
+###################
+# MR-MEGA v.0.2
+###################
+
+Using following command line options:
+Input file: /SAN/ugi/mdd/trans_ethnic_ma/scripts/mr_mega.in.txt
+Output result file: /SAN/ugi/mdd/trans_ethnic_ma/results/MRMEGA.TEST.result
+Output log file: /SAN/ugi/mdd/trans_ethnic_ma/results/MRMEGA.TEST.log
+Number of PC-s in regression: 5
+Program will only print the PCs and die without running meta-analysis!
+Binary trait analysis (expecting columns OR, OR_95L, OR_95U)
+P-value threshold for showing cohort effect direction: 1
+No column filters set
+Column names:
+	Marker name: MARKERNAME
+	Effect allele: EA
+	Other allele: NEA
+	Effect allele frequency: EAF
+	Effect (OR): OR
+	Upper CI of effect: OR_95U
+	Lower CI of effect: OR_95L
+	Strand: STRAND
+	Sample size: N
+	Chromosome: CHROMOSOME
+	Position: POSITION
+Reading cohort list file...
+Processing files...
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz
+	Marker problems:
+	Marker filtering:
+Lambda: 1.0337
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Problem with effect size for marker 1:979748:A:T(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1010118:A:C(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1010259:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1018598:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	EXAMPLE: Problem with effect size for marker 1:1022154:A:G(OR: NA, CI_95L: NA, CI_95U: NA
+	Altogether 211879 similar errors
+	Marker filtering:
+Lambda: 1.10923
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Alleles dont match with previous cohorts: 1:1892325:C:T (A,G vs. (previous) T,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:2180524:A:G (T,C vs. (previous) G,A)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:2224645:A:G (T,C vs. (previous) A,G)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:2231595:A:C (G,T vs. (previous) A,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:2291680:C:T (A,G vs. (previous) T,C)
+	Altogether 9711 similar errors
+	Marker filtering:
+Lambda: 1.0507
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Effect allele is the same as other allele: 1:1041278:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:1131052:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:1865822:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2561268:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2832306:I:I (I,I)
+	Altogether 5647 similar errors
+	EXAMPLE: Alleles dont match with previous cohorts: 1:10873382:A:G (G,A vs. (previous) C,T)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12232806:C:T (T,C vs. (previous) G,A)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12233754:C:T (T,C vs. (previous) A,G)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12241991:A:G (G,A vs. (previous) T,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12251808:G:T (T,G vs. (previous) C,A)
+	Altogether 356 similar errors
+	Marker filtering:
+Lambda: 1.01681
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Effect allele is the same as other allele: 1:1131052:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:1865822:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2832306:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2866667:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:3326581:I:I (I,I)
+	Altogether 3177 similar errors
+	EXAMPLE: Alleles dont match with previous cohorts: 1:10873382:A:G (A,G vs. (previous) C,T)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12232806:C:T (C,T vs. (previous) G,A)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12233754:C:T (C,T vs. (previous) A,G)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12241991:A:G (A,G vs. (previous) T,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12251808:G:T (G,T vs. (previous) C,A)
+	Altogether 340 similar errors
+	Marker filtering:
+Lambda: 0.995223
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Alleles dont match with previous cohorts: 1:10873382:A:G (G,A vs. (previous) C,T)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12232806:C:T (C,T vs. (previous) G,A)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12233754:C:T (T,C vs. (previous) A,G)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12241991:A:G (A,G vs. (previous) T,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12251808:G:T (G,T vs. (previous) C,A)
+	Altogether 383 similar errors
+	Marker filtering:
+Lambda: 1.03897
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz
+	Marker problems:
+	EXAMPLE: Effect allele is the same as other allele: 1:1131052:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:1865822:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2832306:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:2866667:I:I (I,I)
+	EXAMPLE: Effect allele is the same as other allele: 1:3326581:I:I (I,I)
+	Altogether 3386 similar errors
+	EXAMPLE: Alleles dont match with previous cohorts: 1:10873382:A:G (A,G vs. (previous) C,T)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12232806:C:T (C,T vs. (previous) G,A)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12233754:C:T (T,C vs. (previous) A,G)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12241991:A:G (A,G vs. (previous) T,C)
+	EXAMPLE: Alleles dont match with previous cohorts: 1:12251808:G:T (G,T vs. (previous) C,A)
+	Altogether 358 similar errors
+	Marker filtering:
+Lambda: 1.06027
+Reading file /SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz

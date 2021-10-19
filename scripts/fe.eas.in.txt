@@ -1,0 +1,13 @@
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_mvp_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_bbj_reformatted.txt.gz
+/SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt.gz
