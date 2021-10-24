@@ -93,6 +93,11 @@ eas_converge_df <- eas_converge_df[check,]
 eas_converge_df <- eas_converge_df[order(eas_converge_df$CHROMOSOME,eas_converge_df$POSITION),]
 length(unique(eas_converge_df$MARKERNAME)) == nrow(eas_converge_df) # If FALSE, need to find duplicated markernames and delete properly.
 write.table(eas_converge_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_converge_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt.gz")
+sum(eas_converge_df$EAF<0.005|eas_converge_df$EAF>0.995)
+#[1] 2367
+eas_converge_df <- eas_converge_df[!(eas_converge_df$EAF<0.005|eas_converge_df$EAF>0.995),]
+write.table(eas_converge_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_converge_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 #cohort, whi
 eas_whi <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/asians/asians_cm_page_assoc_updated_020919.txt")
@@ -155,6 +160,10 @@ eas_whi_df <- eas_whi_df[order(eas_whi_df$CHROMOSOME,eas_whi_df$POSITION),]
 length(unique(eas_whi_df$MARKERNAME)) == nrow(eas_whi_df) # If FALSE, need to find duplicated markernames and delete properly.
 
 write.table(eas_whi_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_whi_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt.gz")
+sum(eas_whi_df$EAF<0.005|eas_whi_df$EAF>0.995)
+eas_whi_df <- eas_whi_df[!(eas_whi_df$EAF<0.005|eas_whi_df$EAF>0.995),]
+write.table(eas_whi_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_whi_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # CKB SYMPTOMS
 source("/SAN/ugi/mdd/trans_ethnic_ma/scripts/addNewId.R")
@@ -191,6 +200,11 @@ length(n_occur$Var1[n_occur$Freq>1])
 eas_ckb_df <- eas_ckb_df[!eas_ckb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 # variants like 10:10024428:GT:AT, now recoded as 10:10024428:I:I and kept in data
 write.table(eas_ckb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_ckb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt.gz")
+sum(eas_ckb_df$EAF<0.005|eas_ckb_df$EAF>0.995)
+#[1] 2139810
+eas_ckb_df <- eas_ckb_df[!(eas_ckb_df$EAF<0.005|eas_ckb_df$EAF>0.995),]
+write.table(eas_ckb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ckb_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # BioME, SAIGE
 eas_biome <- fread("/SAN/ugi/mdd/sumstats/BioMe/MDDSAIGE.ESA.updated.qced.txt")
@@ -226,6 +240,11 @@ head(eas_biome_df[eas_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 eas_biome_df <- eas_biome_df[!eas_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(eas_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_biome_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_biome_reformatted.txt.gz")
+sum(eas_biome_df$EAF<0.005|eas_biome_df$EAF>0.995)
+#[1] 0
+eas_biome_df <- eas_biome_df[!(eas_biome_df$EAF<0.005|eas_biome_df$EAF>0.995),]
+
 
 # UKB, plink, /SAN/ugi/mdd/ukb/mdd_gwas/eas/eas_pheno1_sr_plink_pcs_maf_qced_recoded.txt
 eas_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/eas/eas_pheno1_sr_plink_pcs_maf_qced_recoded.txt")
@@ -263,7 +282,10 @@ head(eas_ukb_df[eas_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 eas_ukb_df <- eas_ukb_df[!eas_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(eas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+eas_ukb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ukb_reformatted.txt.gz")
+sum(eas_ukb_df$EAF<0.005|eas_ukb_df$EAF>0.995)
+#[1] 0
+eas_ukb_df <- eas_ukb_df[!(eas_ukb_df$EAF<0.005|eas_ukb_df$EAF>0.995),]
 
 # Army-Starrs, plink
 eas_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_asian_qced_updated_191007.txt")
@@ -299,6 +321,11 @@ head(eas_army_df[eas_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 eas_army_df <- eas_army_df[!eas_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(eas_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt",row.names=F,sep="\t",quote=F) 
+eas_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_army_reformatted.txt.gz")
+sum(eas_army_df$EAF<0.005|eas_army_df$EAF>0.995)
+#[1] 0
+eas_army_df <- eas_army_df[!(eas_army_df$EAF<0.005|eas_army_df$EAF>0.995),]
+
 
 # IHS, plink
 eas_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.eas.depr.sumstats.qced.txt")
@@ -322,7 +349,10 @@ eas_ihs_df <- eas_ihs_df[check,]
 eas_ihs_df <- eas_ihs_df[order(eas_ihs_df$CHROMOSOME,eas_ihs_df$POSITION),]
 length(unique(eas_ihs_df$MARKERNAME)) == nrow(eas_ihs_df) 
 write.table(eas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+eas_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_ihs_reformatted.txt.gz")
+sum(eas_ihs_df$EAF<0.005|eas_ihs_df$EAF>0.995)
+#[1] 0
+eas_ihs_df <- eas_ihs_df[!(eas_ihs_df$EAF<0.005|eas_ihs_df$EAF>0.995),]
 
 # Taiwan1
 eas_taiwan1 <- fread("/SAN/ugi/mdd/sumstats/Taiwan/taiwan_plotform1_01072021_qced.txt.gz")
@@ -359,7 +389,10 @@ head(eas_taiwan1_df[eas_taiwan1_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],
 eas_taiwan1_df <- eas_taiwan1_df[!eas_taiwan1_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(eas_taiwan1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+eas_taiwan1_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan1_reformatted.txt.gz")
+sum(eas_taiwan1_df$EAF<0.005|eas_taiwan1_df$EAF>0.995)
+#[1] 0
+eas_whi_df <- eas_whi_df[!(eas_whi_df$EAF<0.005|eas_whi_df$EAF>0.995),]
 
 # Taiwan2
 eas_taiwan2 <- fread("/SAN/ugi/mdd/sumstats/Taiwan/taiwan_plotform2_01072021_qced.txt.gz")
@@ -398,7 +431,9 @@ eas_taiwan2_df <- eas_taiwan2_df[!eas_taiwan2_df$MARKERNAME %in% n_occur$Var1[n_
 
 
 write.table(eas_taiwan2_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt",row.names=F,sep="\t",quote=F) 
-
+eas_taiwan2_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_taiwan2_reformatted.txt.gz")
+sum(eas_taiwan2_df$EAF<0.005|eas_taiwan2_df$EAF>0.995)
+#[1] 0
 
 # 23andMe
 eas_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/east_asian/eas.mdd.sumstats.annotated.valid.qced.reformatted.txt")
@@ -431,6 +466,10 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(eas_23andMe_df[eas_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 eas_23andMe_df <- eas_23andMe_df[!eas_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
+write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_23andMe_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt.gz")
+sum(eas_23andMe_df$EAF<0.005|eas_23andMe_df$EAF>0.995,na.rm=T)
+eas_23andMe_df <- eas_23andMe_df[!is.na(eas_23andMe_df$EAF) & !(eas_23andMe_df$EAF<0.005|eas_23andMe_df$EAF>0.995),]
 write.table(eas_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # MVP
@@ -465,6 +504,9 @@ head(eas_mvp_df[eas_mvp_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 eas_mvp_df <- eas_mvp_df[!eas_mvp_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(eas_mvp_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_mvp_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_mvp_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_mvp_reformatted.txt.gz")
+sum(eas_mvp_df$EAF<0.005|eas_mvp_df$EAF>0.995)
+#[1] 0
 
 # Biobank Japan
 eas_bbj_1 <- fread("/SAN/ugi/mdd/sumstats/BioBank_Japan/GWASsummary_Depression_Japanese_SakaueKanai2020.auto.txt.gz")
@@ -508,6 +550,10 @@ eas_bbj_df <- eas_bbj_df[check,]
 
 length(unique(eas_bbj_df$MARKERNAME)) == nrow(eas_bbj_df)
 write.table(eas_bbj_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_bbj_reformatted.txt",row.names=F,sep="\t",quote=F)
+eas_bbj_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_bbj_reformatted.txt.gz")
+sum(eas_bbj_df$EAF<0.005|eas_bbj_df$EAF>0.995)
+eas_bbj_df <- eas_bbj_df[!(eas_bbj_df$EAF<0.005|eas_bbj_df$EAF>0.995),]
+write.table(eas_bbj_df,"/SAN/ugi/mdd/trans_ethnic_ma/data/eas_bbj_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # GERA
 
@@ -535,7 +581,9 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(gera_df[gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 gera_df <- gera_df[!gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 write.table(gera_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+gera_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eas_gera_reformatted.txt.gz")
+sum(gera_df$EAF<0.005|gera_df$EAF>0.995)
+#[1] 0
 
 ## reformat for AFR data
 # BioMe
@@ -575,6 +623,11 @@ head(afr_biome_df[afr_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_biome_df <- afr_biome_df[!afr_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt",row.names=F,sep="\t",quote=F) 
+afr_biome_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt.gz")
+sum(afr_biome_df$EAF<0.005|afr_biome_df$EAF>0.995)
+#[1] 1200727
+afr_biome_df <- afr_biome_df[!(afr_biome_df$EAF<0.005|afr_biome_df$EAF>0.995),]
+write.table(afr_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # UKB
 afr_ukb <- fread("/SAN/ugi/mdd/ukb/mdd_gwas/african/black_pheno1_sr_plink_pcs_maf_qced.txt")
@@ -608,6 +661,9 @@ head(afr_ukb_df[afr_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_ukb_df <- afr_ukb_df[!afr_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_ukb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ukb_reformatted.txt.gz")
+sum(afr_ukb_df$EAF<0.005|afr_ukb_df$EAF>0.995)
+#[1] 0
 
 # drakenstein
 afr_safr <- fread("/SAN/ugi/mdd/sumstats/safr/safr_depr_sumstats_plink2_maf_qced_updated.txt")
@@ -646,6 +702,9 @@ head(afr_safr_df[afr_safr_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_safr_df <- afr_safr_df[!afr_safr_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_safr_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_safr_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_safr_reformatted.txt.gz")
+sum(afr_safr_df$EAF<0.005|afr_safr_df$EAF>0.995)
+#[1] 0
 
 # army
 afr_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_black_qced_updated.txt")
@@ -682,6 +741,9 @@ head(afr_army_df[afr_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_army_df <- afr_army_df[!afr_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_army_reformatted.txt.gz")
+sum(afr_army_df$EAF<0.005|afr_army_df$EAF>0.995)
+#[1] 0
  
 # whi-share
 afr_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink/res_aa_210831_qced.txt")
@@ -710,6 +772,9 @@ afr_whi_share_df <- afr_whi_share_df[check,]
 afr_whi_share_df <- afr_whi_share_df[order(afr_whi_share_df$CHROMOSOME,afr_whi_share_df$POSITION),]
 length(unique(afr_whi_share_df$MARKERNAME)) == nrow(afr_whi_share_df)
 write.table(afr_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F) 
+afr_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_share_reformatted.txt.gz")
+sum(afr_whi_share_df$EAF<0.005|afr_whi_share_df$EAF>0.995)
+#[1] 0
 
 # whi-page # 20211013, strats from here
 afr_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/aa_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
@@ -748,6 +813,9 @@ head(afr_whi_page_df[afr_whi_page_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1
 afr_whi_page_df <- afr_whi_page_df[!afr_whi_page_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_whi_page_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_whi_page_reformatted.txt.gz")
+sum(afr_whi_page_df$EAF<0.005|afr_whi_page_df$EAF>0.995)
+#[1] 0
 
 # ihs
 afr_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.afr.depr.sumstats.qced.txt")
@@ -778,9 +846,12 @@ afr_ihs_df <- afr_ihs_df[check,]
 afr_ihs_df <- afr_ihs_df[order(afr_ihs_df$CHROMOSOME,afr_ihs_df$POSITION),]
 length(unique(afr_ihs_df$MARKERNAME)) == nrow(afr_ihs_df)
 write.table(afr_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt",row.names=F,sep="\t",quote=F) 
+afr_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_ihs_reformatted.txt.gz")
+sum(afr_ihs_df$EAF<0.005|afr_ihs_df$EAF>0.995)
+#[1] 0
 
 # 23andMe # need to be updated with the new data provided by the 23andMe # Done, chr21-23 added.
-afr_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/african_american/afr_sumstats_corrected/export_african_american/afr.mdd.sumstats.annotated.valid.qced.reformatted.txt")
+afr_23andMe <- fread("/SAN/ugi/mdd/sumstats/23andme/Trans-ethnic_MDD_GWAS_PGC/african_american/afr.mdd.sumstats.annotated.valid.qced.reformatted.txt")
 afr_23andMe$CHR[afr_23andMe$CHR=="X"] <- "23"
 afr_23andMe$CHR <- as.numeric(afr_23andMe$CHR)
 
@@ -814,6 +885,9 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(afr_23andMe_df[afr_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_23andMe_df <- afr_23andMe_df[!afr_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
+write.table(afr_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+sum(afr_23andMe_df$EAF<0.005|afr_23andMe_df$EAF>0.995,na.rm=T)
+afr_23andMe_df <- afr_23andMe_df[!is.na(afr_23andMe_df$EAF)&!(afr_23andMe_df$EAF<0.005|afr_23andMe_df$EAF>0.995),]
 write.table(afr_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # jhs
@@ -852,6 +926,9 @@ head(afr_jhs_df[afr_jhs_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_jhs_df <- afr_jhs_df[!afr_jhs_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_jhs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt",row.names=F,sep="\t",quote=F) 
+afr_jhs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_jhs_reformatted.txt.gz")
+sum(afr_jhs_df$EAF<0.005|afr_jhs_df$EAF>0.995)
+#[1] 0
 
 # biovu
 afr_biovu <- fread("/SAN/ugi/mdd/african_ma/data/051821_BioVU_MDD_AFR_Cov_SAIGE_GWAS_qced.txt.gz")
@@ -884,6 +961,9 @@ afr_biovu_df <- afr_biovu_df[check,]
 afr_biovu_df <- afr_biovu_df[order(afr_biovu_df$CHROMOSOME,afr_biovu_df$POSITION),]
 length(unique(afr_biovu_df$MARKERNAME)) == nrow(afr_biovu_df) 
 write.table(afr_biovu_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt",row.names=F,sep="\t",quote=F)
+afr_biovu_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_biovu_reformatted.txt.gz")
+sum(afr_biovu_df$EAF<0.005|afr_biovu_df$EAF>0.995)
+#[1] 0
 
 # MVP3, decided to use mvp3 data before mvp4 is fixed
 afr_mvp <- fread("/SAN/ugi/mdd/african_ma/data/dbGAP_AFR_ICDdepMVPfreq_N_Neff_reformatted.txt")
@@ -924,6 +1004,9 @@ head(afr_mvp_df[afr_mvp_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 afr_mvp_df <- afr_mvp_df[!afr_mvp_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(afr_mvp_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt",row.names=F,sep="\t",quote=F) 
+afr_mvp_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_mvp_reformatted.txt.gz")
+sum(afr_mvp_df$EAF<0.005|afr_mvp_df$EAF>0.995)
+#[1] 0
 
 # AFR GERA
 gera <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz")
@@ -950,7 +1033,9 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(gera_df[gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 gera_df <- gera_df[!gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 write.table(gera_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+gera_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/afr_gera_reformatted.txt.gz")
+sum(gera_df$EAF<0.005|gera_df$EAF>0.995)
+#[1] 0
 
 ## Reformatting for SAS data
 # UKB, plink
@@ -988,6 +1073,9 @@ head(sas_ukb_df[sas_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 sas_ukb_df <- sas_ukb_df[!sas_ukb_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(sas_ukb_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt",row.names=F,sep="\t",quote=F)
+sas_ukb_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ukb_reformatted.txt.gz")
+sum(sas_ukb_df$EAF<0.005|sas_ukb_df$EAF>0.995)
+#[1] 0
 
 # IHS, plink
 sas_ihs <- fread("/SAN/ugi/mdd/sumstats/IHS/ihs.sas.depr.sumstats.qced.txt")
@@ -1017,7 +1105,8 @@ sas_ihs_df <- sas_ihs_df[check,]
 sas_ihs_df <- sas_ihs_df[order(sas_ihs_df$CHROMOSOME,sas_ihs_df$POSITION),]
 length(unique(sas_ihs_df$MARKERNAME)) == nrow(sas_ihs_df) 
 write.table(sas_ihs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+sas_ihs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_ihs_reformatted.txt.gz")
+sum(sas_ihs_df$EAF<0.005|sas_ihs_df$EAF>0.995)
 
 # G&H, SAIGE, version 1 (ICD diagnosis based)
 # Have decided to use only GH phenotype 1 in analysis
@@ -1060,7 +1149,10 @@ head(sas_gh_v1_df[sas_gh_v1_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 sas_gh_v1_df <- sas_gh_v1_df[!sas_gh_v1_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(sas_gh_v1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+sas_gh_v1_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt.gz")
+sum(sas_gh_v1_df$EAF<0.005|sas_gh_v1_df$EAF>0.995)
+sas_gh_v1_df <- sas_gh_v1_df[!(sas_gh_v1_df$EAF<0.005|sas_gh_v1_df$EAF>0.995),]
+write.table(sas_gh_v1_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/sas_gh_v1_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## Reformatting for HIS data
 # 23andMe, logistic regression
@@ -1105,6 +1197,11 @@ head(his_23andMe_df[his_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],
 his_23andMe_df <- his_23andMe_df[!his_23andMe_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(his_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_23andMe_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt.gz")
+sum(his_23andMe_df$EAF<0.005|his_23andMe_df$EAF>0.995,na.rm=T)
+#[1] 0
+his_23andMe_df <- his_23andMe_df[!is.na(his_23andMe_df$EAF)&!(his_23andMe_df$EAF<0.005|his_23andMe_df$EAF>0.995),]
+write.table(his_23andMe_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_23andMe_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # WHI Page, plink
 his_whi_page <- fread("/SAN/ugi/mdd/whi/whi_gen/PAGE/phg000910_MEGA/final-QC/ha_mega_page_plink_pcs_200226_plink2.assoc.qced.txt")
@@ -1147,6 +1244,9 @@ head(his_whi_page_df[his_whi_page_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1
 his_whi_page_df <- his_whi_page_df[!his_whi_page_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(his_whi_page_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_whi_page_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_page_reformatted.txt.gz")
+sum(his_whi_page_df$EAF<0.005|his_whi_page_df$EAF>0.995)
+#[1] 0
 
 # WHI Share, plink
 his_whi_share <- fread("/SAN/ugi/mdd/whi/whi_gen/GWAS_SHARe/plink_ha/res_ha_210901_qced.txt")
@@ -1177,7 +1277,9 @@ his_whi_share_df <- his_whi_share_df[check,]
 his_whi_share_df <- his_whi_share_df[order(his_whi_share_df$CHROMOSOME,his_whi_share_df$POSITION),]
 length(unique(his_whi_share_df$MARKERNAME)) == nrow(his_whi_share_df) 
 write.table(his_whi_share_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+his_whi_share_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_whi_share_reformatted.txt.gz")
+sum(his_whi_share_df$EAF<0.005|his_whi_share_df$EAF>0.995)
+#[1] 0
 
 # Army-Starss, plink
 his_army <- fread("/SAN/ugi/mdd/sumstats/army_starrs/nss1_depr_sumstats_plink2_hisp_effn_qced_07042021.txt.gz")
@@ -1214,6 +1316,11 @@ head(his_army_df[his_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 
 his_army_df <- his_army_df[!his_army_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
+write.table(his_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_army_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt.gz")
+sum(his_army_df$EAF<0.005|his_army_df$EAF>0.995)
+#[1] 121
+his_army_df <- his_army_df[!(his_army_df$EAF<0.005|his_army_df$EAF>0.995),]
 write.table(his_army_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_army_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # BioMe, SAIGE
@@ -1254,6 +1361,10 @@ head(his_biome_df[his_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 his_biome_df <- his_biome_df[!his_biome_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
 write.table(his_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt",row.names=F,sep="\t",quote=F) 
+his_biome_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt.gz")
+sum(his_biome_df$EAF<0.005|his_biome_df$EAF>0.995)
+his_biome_df <- his_biome_df[!(his_biome_df$EAF<0.005|his_biome_df$EAF>0.995),]
+write.table(his_biome_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_biome_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # HIS GERA
 gera <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/lat_gera_reformatted.txt.gz")
@@ -1280,6 +1391,9 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(gera_df[gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 gera_df <- gera_df[!gera_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 write.table(gera_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_gera_reformatted.txt",row.names=F,sep="\t",quote=F)
+gera_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_gera_reformatted.txt.gz")
+sum(gera_df$EAF<0.005|gera_df$EAF>0.995)
+#[1] 0
 
 # HIS HCHS
 his_hchs <- fread("/SAN/ugi/mdd/sumstats/HCHS_SOL_binary/his_hchs_qced_211016.txt")
@@ -1309,6 +1423,11 @@ table(n_occur$Freq[n_occur$Freq>1])
 head(his_hchs_df[his_hchs_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],])
 his_hchs_df <- his_hchs_df[!his_hchs_df$MARKERNAME %in% n_occur$Var1[n_occur$Freq>1],]
 
+write.table(his_hchs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt",row.names=F,sep="\t",quote=F)
+his_hchs_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz")
+sum(his_hchs_df$EAF<0.005|his_hchs_df$EAF>0.995)
+#[1] 3307369
+his_hchs_df <- his_hchs_df[!(his_hchs_df$EAF<0.005|his_hchs_df$EAF>0.995),]
 write.table(his_hchs_df, "/SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 ## Reformatting for EUR
@@ -1365,7 +1484,11 @@ eur_mdd3_df <- eur_mdd3_df[check,]
 eur_mdd3_df <- eur_mdd3_df[order(eur_mdd3_df$CHROMOSOME,eur_mdd3_df$POSITION),]
 length(unique(eur_mdd3_df$MARKERNAME)) == nrow(eur_mdd3_df) 
 write.table(eur_mdd3_df , "/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt",row.names=F,sep="\t",quote=F)
-
+eur_mdd3_df <- fread("/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz")
+sum(eur_mdd3_df$EAF<0.005|eur_mdd3_df$EAF>0.995)
+#[1] 2205302
+eur_mdd3_df <- eur_mdd3_df[!(eur_mdd3_df$EAF<0.005|eur_mdd3_df$EAF>0.995),]
+write.table(eur_mdd3_df , "/SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt",row.names=F,sep="\t",quote=F)
 
 # whi-share aa and ha data has been reanalyzed, run new refomatting for new results
 # whi-share

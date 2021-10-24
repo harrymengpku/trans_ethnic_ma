@@ -16,6 +16,7 @@ echo "STDERR SE" >> $WD/scripts/METAL_FE.txt
 echo "PROCESS $line" >> $WD/scripts/METAL_FE.txt
 done < $WD/scripts/fe.all.ancestry.in.txt
 
-echo OUTFILE $WD/results/METAANALYSIS_FE_ALL_ANCESTRY .tbl >> $WD/scripts/METAL_FE.txt 
+echo OUTFILE $WD/results/METAANALYSIS_FE_ALL_ANCESTRY_ .tbl >> $WD/scripts/METAL_FE.txt 
 echo "ANALYZE HETEROGENEITY" >> $WD/scripts/METAL_FE.txt 
-
+echo "CLEAR" >> $WD/scripts/METAL_FE.txt
+echo "QUIT" >> $WD/scripts/METAL_FE.txt

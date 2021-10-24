@@ -58,5 +58,7 @@ PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
 PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/his_hchs_reformatted.txt.gz
-OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_HIS .tbl
+OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_HIS_ .tbl
 ANALYZE HETEROGENEITY
+CLEAR
+QUIT

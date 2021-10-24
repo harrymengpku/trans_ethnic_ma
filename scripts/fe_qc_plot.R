@@ -6,8 +6,9 @@ out <- args[2]
 library(data.table)
 library(tidyr)
 df <- fread(file)
+dim(df)
 
-summary(df$HetIsq)
+summary(df$HetISq)
 heter <- subset(df, HetISq<75)
 dim(heter)
 
@@ -18,6 +19,9 @@ df <- df[,..cols]
 
 names(df) <- c("MarkerName","Chromosome","Position","EA","NEA","EAF","BETA","SE","P","N_study","Direction","HetISq","HetPVal")
 df <- df[df$N_study>1,]
+df$Chromosome <- as.numeric(df$Chromosome)
+df$Position <- as.numeric(df$Position)
+df$P <- as.numeric(df$P)
 df <- df[order(df$Chromosome,df$Position),]
 dim(df)
 write.table(df,paste0(out,".txt"), sep="\t", row.names=FALSE, col.names=TRUE, quote = FALSE)
@@ -30,6 +34,7 @@ write.table(gw,paste0(out,"_sig.txt"),sep="\t",row.names=FALSE, col.names=TRUE,q
 #manhattan plot
 dat <- df[!is.na(df$Chromosome)&!is.na(df$Position)&!is.na(df$P),]
 library(qqman)
+
 png(paste0(out,".manhattan.png"),w=2300, h=1200, pointsize=20)
 manhattan(dat,chr="Chromosome",bp="Position",p="P",col = c("navyblue","red4"))
 dev.off()

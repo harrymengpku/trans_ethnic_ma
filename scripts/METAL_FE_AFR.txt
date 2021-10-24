@@ -98,5 +98,7 @@ PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
 PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/afr_23andMe_reformatted.txt.gz
-OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_AFR .tbl
+OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_AFR_ .tbl
 ANALYZE HETEROGENEITY
+CLEAR
+QUIT

@@ -290,5 +290,7 @@ PVALUELABEL P
 FREQLABEL EAF
 STDERR SE
 PROCESS /SAN/ugi/mdd/trans_ethnic_ma/data/eur_mdd3_reformatted.txt.gz
-OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_ALL_ANCESTRY .tbl
+OUTFILE /SAN/ugi/mdd/trans_ethnic_ma/results/METAANALYSIS_FE_ALL_ANCESTRY_ .tbl
 ANALYZE HETEROGENEITY
+CLEAR
+QUIT

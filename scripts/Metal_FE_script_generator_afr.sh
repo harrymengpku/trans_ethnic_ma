@@ -18,6 +18,7 @@ echo "STDERR SE" >> $WD/scripts/METAL_FE_AFR.txt
 echo "PROCESS $line" >> $WD/scripts/METAL_FE_AFR.txt
 done < $WD/scripts/fe.afr.in.txt
 
-echo OUTFILE $WD/results/METAANALYSIS_FE_AFR .tbl >> $WD/scripts/METAL_FE_AFR.txt 
+echo OUTFILE $WD/results/METAANALYSIS_FE_AFR_ .tbl >> $WD/scripts/METAL_FE_AFR.txt 
 echo "ANALYZE HETEROGENEITY" >> $WD/scripts/METAL_FE_AFR.txt 
-
+echo "CLEAR" >> $WD/scripts/METAL_FE_AFR.txt
+echo "QUIT" >> $WD/scripts/METAL_FE_AFR.txt
